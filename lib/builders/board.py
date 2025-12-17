@@ -82,7 +82,3 @@ class BoardBuilder(BaseMeshBuilder):
     @property
     def offset(self) -> FloatPosition3d:
         return -self._step/2 - self._x_indent, -self._step/2 - self._y_indent, -self._thickness/2
-
-    # @property
-    # def cache_key(self) -> str:
-    #     return f"board_{self._x_count}_{self._y_count}_{self._step}_{self._pad_radius}_{self._contact_pad_radius}_{self._contact_pad_thickness}_{self._thickness}_{self._x_indent}_{self._y_indent}_{self._color}_{self._contact_pad_color}"
