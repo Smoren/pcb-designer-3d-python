@@ -1,5 +1,4 @@
 trimesh[easy]
-trimeshtools>=0.1.4
-
+trimeshtools
 numpy
 shapely

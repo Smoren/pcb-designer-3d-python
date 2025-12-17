@@ -3,11 +3,11 @@ import trimesh
 from trimeshtools.combine import union_meshes, concatenate_meshes
 from trimeshtools.move import move_to_bound
 
-from lib.base import MeshBuilderInterface, FloatPosition3d
+from lib.base import BaseMeshBuilder, FloatPosition3d
 from lib.constants import CYLINDER_SECTIONS
 
 
-class BoardBuilder(MeshBuilderInterface):
+class BoardBuilder(BaseMeshBuilder):
     _x_count: int
     _y_count: int
     _step: float
@@ -82,3 +82,7 @@ class BoardBuilder(MeshBuilderInterface):
     @property
     def offset(self) -> FloatPosition3d:
         return -self._step/2 - self._x_indent, -self._step/2 - self._y_indent, -self._thickness/2
+
+    # @property
+    # def cache_key(self) -> str:
+    #     return f"board_{self._x_count}_{self._y_count}_{self._step}_{self._pad_radius}_{self._contact_pad_radius}_{self._contact_pad_thickness}_{self._thickness}_{self._x_indent}_{self._y_indent}_{self._color}_{self._contact_pad_color}"

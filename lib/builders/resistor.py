@@ -5,12 +5,12 @@ from trimeshtools.combine import union_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_matrix_for_z
 
-from lib.base import MeshBuilderInterface, AxisDirection, FloatPosition3d
+from lib.base import BaseMeshBuilder, AxisDirection, FloatPosition3d
 from lib.constants import CYLINDER_SECTIONS
 from lib.utils import create_bounded_pipe
 
 
-class ResistorBuilder(MeshBuilderInterface):
+class ResistorBuilder(BaseMeshBuilder):
     _length: float
     _radius: float
     _axis_direction: AxisDirection

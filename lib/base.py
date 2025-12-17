@@ -1,9 +1,14 @@
 import abc
+import inspect
+import os
+import re
 from enum import Enum
 from typing import Tuple
 
 import trimesh
 from trimeshtools.move import move_to_bound
+
+from lib.constants import CACHE_DIR
 
 FloatPosition3d = Tuple[float, float, float]
 IntPosition3d = Tuple[int, int, int]
@@ -24,14 +29,55 @@ class AxisDirection(Enum):
     ALONG_Y = 1
 
 
-class MeshBuilderInterface(abc.ABC):
+class BaseMeshBuilder(abc.ABC):
     @abc.abstractmethod
     def build(self):
         raise NotImplementedError()
 
     @property
+    def cache_key(self) -> str:
+        return '_'.join([
+            self.__class__.__name__,
+            *[str(getattr(self, attr)) for attr in self.__dict__.keys()],
+        ])
+
+    @property
     def offset(self) -> FloatPosition3d:
         return 0, 0, 0
+
+
+class CachedMeshBuilder(BaseMeshBuilder):
+    _mesh_builder: BaseMeshBuilder
+    _dir_path: str
+
+    def __init__(self, mesh_builder: BaseMeshBuilder, dir_path: str = CACHE_DIR):
+        self._mesh_builder = mesh_builder
+        self._dir_path = dir_path
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path, exist_ok=True)
+
+    def build(self):
+        file_path = os.path.join(self._dir_path, f'{self.cache_key}.obj')
+        if os.path.exists(file_path):
+            return trimesh.load(file_path)
+        mesh = self._mesh_builder.build()
+        mesh.export(file_path)
+        return mesh
+
+    @property
+    def offset(self) -> FloatPosition3d:
+        return 0, 0, 0
+
+    @property
+    def cache_key(self) -> str:
+        return self._format_cache_key(self._mesh_builder.cache_key)
+
+    @staticmethod
+    def _format_cache_key(key: str) -> str:
+        result = re.sub(r'[^a-zA-Z0-9._]', '_', key)
+        result = re.sub(r'[_]{2,}', '_', result)
+        result = result.strip('_')
+        return result
 
 
 class GridPlacer:
@@ -42,7 +88,7 @@ class GridPlacer:
         self._step = step
         self._offset = offset
 
-    def place(self, mesh_builder: MeshBuilderInterface, position: IntPosition2d, side: PositionSide) -> trimesh.Trimesh:
+    def place(self, mesh_builder: BaseMeshBuilder, position: IntPosition2d, side: PositionSide) -> trimesh.Trimesh:
         mesh = mesh_builder.build()
 
         if side == PositionSide.BOTTOM:
