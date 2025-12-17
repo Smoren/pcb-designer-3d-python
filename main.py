@@ -9,7 +9,7 @@ if __name__ == '__main__':
     file_name = 'test'
 
     # builder = ResistorBuilder(30, 5, AxisDirection.ALONG_X)
-    builder = create_board_builder(10, 5, x_indent=1.5, y_indent=1.5)
+    builder = create_board_builder(10, 5, x_indent=1.2, y_indent=1.2)
     placer = GridPlacer(10, (0, 0, 0))
 
     final_mesh = placer.place(builder, (0, 0), PositionSide.TOP)
