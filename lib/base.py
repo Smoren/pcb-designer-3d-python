@@ -60,13 +60,14 @@ class CachedMeshBuilder(BaseMeshBuilder):
         file_path = os.path.join(self._dir_path, f'{self.cache_key}.obj')
         if os.path.exists(file_path):
             return trimesh.load(file_path)
+
         mesh = self._mesh_builder.build()
         mesh.export(file_path)
         return mesh
 
     @property
     def offset(self) -> FloatPosition3d:
-        return 0, 0, 0
+        return self._mesh_builder.offset
 
     @property
     def cache_key(self) -> str:

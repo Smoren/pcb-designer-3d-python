@@ -1,14 +1,14 @@
-from lib.base import CachedMeshBuilder
+from lib.base import CachedMeshBuilder, BaseMeshBuilder
 from lib.builders.board import BoardBuilder
-from lib.factories.constants import BOARD_STEP, BOARD_PAD_RADIUS, BOARD_THICKNESS, BOARD_CONTACT_PAD_RADIUS, \
+from lib.factories.constants import BOARD_GRID_STEP, BOARD_PAD_RADIUS, BOARD_THICKNESS, BOARD_CONTACT_PAD_RADIUS, \
     BOARD_CONTACT_PAD_THICKNESS, BOARD_COLOR, BOARD_CONTACT_PAD_COLOR
 
 
-def create_board_builder(x_count: int, y_count: int, x_indent: float = 0, y_indent: float = 0) -> BoardBuilder:
+def create_board_builder(x_count: int, y_count: int, x_indent: float = 0, y_indent: float = 0) -> BaseMeshBuilder:
     return CachedMeshBuilder(BoardBuilder(
         x_count,
         y_count,
-        step=BOARD_STEP,
+        step=BOARD_GRID_STEP,
         pad_radius=BOARD_PAD_RADIUS,
         contact_pad_radius=BOARD_CONTACT_PAD_RADIUS,
         contact_pad_thickness=BOARD_CONTACT_PAD_THICKNESS,
