@@ -1,0 +1,5 @@
+trimesh[easy]
+trimeshtools>=0.1.4
+
+numpy
+shapely
