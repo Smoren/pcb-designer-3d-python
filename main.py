@@ -1,14 +1,15 @@
 from trimeshtools.show import show_mesh
-from trimeshtools.utils import fix_all
 
 from lib.base import GridPlacer, PositionSide, AxisDirection
-from lib.first import CubeBuilder, ConeBuilder
-from lib.resistor import ResistorBuilder
+from lib.builders.board import BoardBuilder
+from lib.builders.resistor import ResistorBuilder
+from lib.factories.board import create_board_builder
 
 if __name__ == '__main__':
     file_name = 'test'
 
-    builder = ResistorBuilder(30, 5, AxisDirection.ALONG_X)
+    # builder = ResistorBuilder(30, 5, AxisDirection.ALONG_X)
+    builder = create_board_builder(10, 5, x_indent=1.5, y_indent=1.5)
     placer = GridPlacer(10, (0, 0, 0))
 
     final_mesh = placer.place(builder, (0, 0), PositionSide.TOP)

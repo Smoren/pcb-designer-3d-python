@@ -4,9 +4,9 @@ import trimesh
 from trimeshtools.combine import union_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_matrix_for_z
-from trimeshtools.show import show_mesh
 
 from lib.base import MeshBuilderInterface, AxisDirection, FloatPosition3d
+from lib.constants import CYLINDER_SECTIONS
 from lib.utils import create_bounded_pipe
 
 
@@ -29,7 +29,7 @@ class ResistorBuilder(MeshBuilderInterface):
         left_sphere.apply_translation([-self._length/2, 0, 0])
         right_sphere.apply_translation([self._length/2, 0, 0])
 
-        cylinder = trimesh.creation.cylinder(radius=self._radius, height=self._length, sections=128)
+        cylinder = trimesh.creation.cylinder(radius=self._radius, height=self._length, sections=CYLINDER_SECTIONS)
         cylinder.apply_transform(create_rotation_matrix_for_x(math.pi/2))
         cylinder.apply_transform(create_rotation_matrix_for_z(math.pi/2))
 
