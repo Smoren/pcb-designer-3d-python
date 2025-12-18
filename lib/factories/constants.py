@@ -26,3 +26,4 @@ LED_CATHODE_LENGTH = 16.7
 LED_COLOR_RED = np.array([255, 0, 0, 255])
 LED_COLOR_GREEN = np.array([0, 255, 0, 255])
 LED_COLOR_BLUE = np.array([0, 0, 255, 255])
+LED_COLOR_ORANGE = np.array([255, 125, 0, 255])
