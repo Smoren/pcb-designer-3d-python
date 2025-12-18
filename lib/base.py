@@ -1,5 +1,6 @@
 import abc
 import inspect
+import math
 import os
 import re
 from enum import Enum
@@ -7,6 +8,7 @@ from typing import Tuple, Dict, Optional
 
 import trimesh
 from trimeshtools.move import move_to_bound
+from trimeshtools.rotate import create_rotation_matrix_for_x
 
 from lib.constants import CACHE_DIR
 
@@ -101,7 +103,7 @@ class GridPlacer:
         mesh = mesh_builder.build()
 
         if side == PositionSide.BOTTOM:
-            mesh.vertices[:, 2] *= -1
+            mesh.apply_transform(create_rotation_matrix_for_x(math.pi))
 
         move_to_bound(mesh, 1, 1, side.direction)
 

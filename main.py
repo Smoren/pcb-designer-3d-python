@@ -18,9 +18,10 @@ if __name__ == '__main__':
 
     board_mesh = placer.place(board_builder, (0, 0), PositionSide.TOP)
     resistor_mesh1 = placer.place(horizontal_resistor_builder, (2, 3), PositionSide.TOP)
-    resistor_mesh2 = placer.place(vertical_resistor_builder, (5, 4), PositionSide.TOP)
+    resistor_mesh2 = placer.place(vertical_resistor_builder, (13, 3), PositionSide.TOP)
+    resistor_mesh3 = placer.place(vertical_resistor_builder, (13, 4), PositionSide.BOTTOM)
 
-    final_mesh = concatenate_meshes(board_mesh, resistor_mesh1, resistor_mesh2)
+    final_mesh = concatenate_meshes(board_mesh, resistor_mesh1, resistor_mesh2, resistor_mesh3)
     fix_all(final_mesh)
 
     print('is_watertight =', final_mesh.is_watertight)
@@ -29,4 +30,4 @@ if __name__ == '__main__':
     final_mesh.export(f'output/{file_name}.stl')
     print(f'Saved: output/{file_name}.stl')
 
-    show_mesh(final_mesh, with_axis=True)
+    show_mesh(final_mesh, with_axis=False)

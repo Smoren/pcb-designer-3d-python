@@ -51,7 +51,7 @@ class BoardBuilder(BaseMeshBuilder):
 
         move_to_bound(board_mesh, 1, 1, 0)
         diff_mesh = trimesh.creation.cylinder(radius=self._pad_radius, height=self._thickness*2, sections=CYLINDER_SECTIONS)
-        union_mesh = trimesh.creation.cylinder(radius=self._contact_pad_radius, height=self._thickness + self._contact_pad_thickness, sections=CYLINDER_SECTIONS)
+        union_mesh = trimesh.creation.cylinder(radius=self._contact_pad_radius, height=self._thickness + self._contact_pad_thickness*2, sections=CYLINDER_SECTIONS)
         union_mesh = union_mesh.difference(diff_mesh)
 
         diff_mesh = trimesh.creation.cylinder(radius=(self._pad_radius + self._contact_pad_radius)/2, height=self._thickness*2, sections=CYLINDER_SECTIONS)
@@ -81,4 +81,4 @@ class BoardBuilder(BaseMeshBuilder):
 
     @property
     def offset(self) -> FloatPosition3d:
-        return -self._step/2 - self._x_indent, -self._step/2 - self._y_indent, -self._thickness/2
+        return -self._step/2 - self._x_indent, -self._step/2 - self._y_indent, -(self._thickness+self._contact_pad_thickness*2)/2
