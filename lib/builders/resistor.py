@@ -20,7 +20,7 @@ class ResistorBuilder(BaseMeshBuilder):
     _wire_vertical_length: float
     _offset_z: float
     _color: np.ndarray
-    _color_wire: np.ndarray
+    _color_contact: np.ndarray
 
     def __init__(
         self,
@@ -32,7 +32,7 @@ class ResistorBuilder(BaseMeshBuilder):
         wire_vertical_length: float,
         offset_z: float,
         color: np.ndarray,
-        color_wire: np.ndarray,
+        color_contact: np.ndarray,
     ):
         self._length = length
         self._radius = radius
@@ -42,7 +42,7 @@ class ResistorBuilder(BaseMeshBuilder):
         self._wire_vertical_length = wire_vertical_length
         self._offset_z = offset_z
         self._color = color
-        self._color_wire = color_wire
+        self._color_contact = color_contact
 
     def build(self) -> trimesh.Trimesh:
         left_sphere = trimesh.creation.icosphere(radius=self._radius)
@@ -66,18 +66,18 @@ class ResistorBuilder(BaseMeshBuilder):
 
         move_to_bound(center_wire, 1)
         move_to_bound(left_wire, -1)
-        wire_mesh = union_meshes(center_wire, left_wire)
+        contacts_mesh = union_meshes(center_wire, left_wire)
 
-        move_to_bound(wire_mesh, -1)
+        move_to_bound(contacts_mesh, -1)
         move_to_bound(right_wire, 1)
-        wire_mesh = union_meshes(wire_mesh, right_wire)
+        contacts_mesh = union_meshes(contacts_mesh, right_wire)
 
-        move_to_bound(wire_mesh, 0, 0)
+        move_to_bound(contacts_mesh, 0, 0)
 
         final_mesh.visual.face_colors = self._color
-        wire_mesh.visual.face_colors = self._color_wire
+        contacts_mesh.visual.face_colors = self._color_contact
 
-        final_mesh = concatenate_meshes(final_mesh, wire_mesh)
+        final_mesh = concatenate_meshes(final_mesh, contacts_mesh)
         move_to_bound(final_mesh, 0, 0, 0)
 
         return final_mesh
@@ -88,8 +88,3 @@ class ResistorBuilder(BaseMeshBuilder):
         if rotation.is_vertical:
             return -self._radius, 0, self._offset_z
         raise Exception(f"Invalid rotation for {self.__class__.__name__}")  # TODO custom exception
-
-        if self._axis_direction == Rotation.NO_ROTATION:
-            return 0, -self._radius, self._offset_z
-
-        return -self._radius, 0, self._offset_z

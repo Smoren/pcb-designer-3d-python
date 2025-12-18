@@ -114,7 +114,7 @@ class GridPlacer:
         mesh = mesh_builder.build()
 
         if rotation != rotation.NO_ROTATION:
-            mesh.apply_transform(create_rotation_matrix_for_z(rotation.angle))
+            mesh.apply_transform(create_rotation_matrix_for_z(-rotation.angle))
 
         if side == PositionSide.BOTTOM:
             mesh.apply_transform(create_rotation_matrix_for_x(math.pi))

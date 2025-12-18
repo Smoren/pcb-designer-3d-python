@@ -17,5 +17,5 @@ def create_resistor_builder(color: np.ndarray = RESISTOR_DEFAULT_COLOR) -> BaseM
         wire_vertical_length=RESISTOR_RADIUS + RESISTOR_TOLERANCE + BOARD_THICKNESS + BOARD_CONTACT_PAD_THICKNESS + WIRE_CONTACT_TOLERANCE,
         offset_z=-BOARD_THICKNESS/2 - WIRE_CONTACT_TOLERANCE,
         color=color,
-        color_wire=WIRE_CONTACT_COLOR,
+        color_contact=WIRE_CONTACT_COLOR,
     ))
