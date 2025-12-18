@@ -33,7 +33,7 @@ class AxisDirection(Enum):
 
 class BaseMeshBuilder(abc.ABC):
     @abc.abstractmethod
-    def build(self):
+    def build(self) -> trimesh.Trimesh:
         raise NotImplementedError()
 
     @property
@@ -59,7 +59,7 @@ class CachedMeshBuilder(BaseMeshBuilder):
         if not os.path.exists(dir_path):
             os.makedirs(dir_path, exist_ok=True)
 
-    def build(self):
+    def build(self) -> trimesh.Trimesh:
         if self.cache_key in CachedMeshBuilder._map:
             return CachedMeshBuilder._map[self.cache_key].copy()
 

@@ -47,7 +47,7 @@ class ResistorBuilder(BaseMeshBuilder):
         self._color = color
         self._color_wire = color_wire
 
-    def build(self):
+    def build(self) -> trimesh.Trimesh:
         left_sphere = trimesh.creation.icosphere(radius=self._radius)
         right_sphere = trimesh.creation.icosphere(radius=self._radius)
 
