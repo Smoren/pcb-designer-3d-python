@@ -1,14 +1,13 @@
 import abc
-import inspect
 import math
 import os
 import re
 from enum import Enum
-from typing import Tuple, Dict, Optional
+from typing import Tuple, Dict
 
 import trimesh
 from trimeshtools.move import move_to_bound
-from trimeshtools.rotate import create_rotation_matrix_for_x
+from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_matrix_for_z
 
 from lib.constants import CACHE_DIR
 
@@ -26,9 +25,23 @@ class PositionSide(Enum):
         return float(self.value)
 
 
-class AxisDirection(Enum):
-    ALONG_X = 0
-    ALONG_Y = 1
+class Rotation(Enum):
+    NO_ROTATION = 0
+    ROTATE_CLOCKWISE_90 = 0.5
+    ROTATE_COUNTER_CLOCKWISE_90 = -0.5
+    ROTATE_180 = 1
+
+    @property
+    def angle(self):
+        return float(self.value * math.pi)
+
+    @property
+    def is_horizontal(self):
+        return self == Rotation.NO_ROTATION or self == Rotation.ROTATE_180
+
+    @property
+    def is_vertical(self):
+        return self == Rotation.ROTATE_CLOCKWISE_90 or self == Rotation.ROTATE_COUNTER_CLOCKWISE_90
 
 
 class BaseMeshBuilder(abc.ABC):
@@ -43,8 +56,7 @@ class BaseMeshBuilder(abc.ABC):
             *[str(getattr(self, attr)) for attr in self.__dict__.keys()],
         ])
 
-    @property
-    def offset(self) -> FloatPosition3d:
+    def get_offset(self, side: PositionSide, rotation: Rotation) -> FloatPosition3d:
         return 0, 0, 0
 
 
@@ -75,9 +87,8 @@ class CachedMeshBuilder(BaseMeshBuilder):
         CachedMeshBuilder._map[self.cache_key] = mesh
         return mesh
 
-    @property
-    def offset(self) -> FloatPosition3d:
-        return self._mesh_builder.offset
+    def get_offset(self, side: PositionSide, rotation: Rotation) -> FloatPosition3d:
+        return self._mesh_builder.get_offset(side, rotation)
 
     @property
     def cache_key(self) -> str:
@@ -99,17 +110,21 @@ class GridPlacer:
         self._step = step
         self._offset = offset
 
-    def place(self, mesh_builder: BaseMeshBuilder, position: IntPosition2d, side: PositionSide) -> trimesh.Trimesh:
+    def place(self, mesh_builder: BaseMeshBuilder, position: IntPosition2d, side: PositionSide, rotation: Rotation) -> trimesh.Trimesh:
         mesh = mesh_builder.build()
+
+        if rotation != rotation.NO_ROTATION:
+            mesh.apply_transform(create_rotation_matrix_for_z(rotation.angle))
 
         if side == PositionSide.BOTTOM:
             mesh.apply_transform(create_rotation_matrix_for_x(math.pi))
 
         move_to_bound(mesh, 1, 1, side.direction)
 
-        offset_x = self._offset[0] + position[0]*self._step + mesh_builder.offset[0]
-        offset_y = self._offset[1] + position[1]*self._step + mesh_builder.offset[1]
-        offset_z = self._offset[2] + side.direction*mesh_builder.offset[2]
+        mesh_offset = mesh_builder.get_offset(side, rotation)
+        offset_x = self._offset[0] + position[0]*self._step + mesh_offset[0]
+        offset_y = self._offset[1] + position[1]*self._step + mesh_offset[1]
+        offset_z = self._offset[2] + side.direction*mesh_offset[2]
 
         mesh.apply_translation([offset_x, offset_y, offset_z])
 

@@ -6,7 +6,7 @@ from trimeshtools.combine import union_meshes, concatenate_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_matrix_for_z
 
-from lib.base import BaseMeshBuilder, AxisDirection, FloatPosition3d
+from lib.base import BaseMeshBuilder, Rotation, FloatPosition3d, PositionSide
 from lib.constants import CYLINDER_SECTIONS
 from lib.utils import create_bounded_pipe
 
@@ -14,7 +14,6 @@ from lib.utils import create_bounded_pipe
 class ResistorBuilder(BaseMeshBuilder):
     _length: float
     _radius: float
-    _axis_direction: AxisDirection
     _wire_contact_radius: float
     _wire_bond_radius: float
     _wire_horizontal_length: float
@@ -27,7 +26,6 @@ class ResistorBuilder(BaseMeshBuilder):
         self,
         length: float,
         radius: float,
-        axis_direction: AxisDirection,
         wire_contact_radius: float,
         wire_bond_radius: float,
         wire_horizontal_length: float,
@@ -36,7 +34,6 @@ class ResistorBuilder(BaseMeshBuilder):
         color: np.ndarray,
         color_wire: np.ndarray,
     ):
-        self._axis_direction = axis_direction
         self._length = length
         self._radius = radius
         self._wire_contact_radius = wire_contact_radius
@@ -83,15 +80,16 @@ class ResistorBuilder(BaseMeshBuilder):
         final_mesh = concatenate_meshes(final_mesh, wire_mesh)
         move_to_bound(final_mesh, 0, 0, 0)
 
-        if self._axis_direction == AxisDirection.ALONG_Y:
-            final_mesh.apply_transform(create_rotation_matrix_for_z(math.pi/2))
-            move_to_bound(final_mesh, 0, 0, 0)
-
         return final_mesh
 
-    @property
-    def offset(self) -> FloatPosition3d:
-        if self._axis_direction == AxisDirection.ALONG_X:
+    def get_offset(self, side: PositionSide, rotation: Rotation) -> FloatPosition3d:
+        if rotation.is_horizontal:
+            return 0, -self._radius, self._offset_z
+        if rotation.is_vertical:
+            return -self._radius, 0, self._offset_z
+        raise Exception(f"Invalid rotation for {self.__class__.__name__}")  # TODO custom exception
+
+        if self._axis_direction == Rotation.NO_ROTATION:
             return 0, -self._radius, self._offset_z
 
         return -self._radius, 0, self._offset_z

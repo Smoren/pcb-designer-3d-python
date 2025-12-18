@@ -3,7 +3,7 @@ import trimesh
 from trimeshtools.combine import union_meshes, concatenate_meshes
 from trimeshtools.move import move_to_bound
 
-from lib.base import BaseMeshBuilder, FloatPosition3d
+from lib.base import BaseMeshBuilder, FloatPosition3d, Rotation, PositionSide
 from lib.constants import CYLINDER_SECTIONS
 
 
@@ -79,6 +79,17 @@ class BoardBuilder(BaseMeshBuilder):
 
         return concatenate_meshes(board_mesh, contact_pads)
 
-    @property
-    def offset(self) -> FloatPosition3d:
-        return -self._step/2 - self._x_indent, -self._step/2 - self._y_indent, -(self._thickness+self._contact_pad_thickness*2)/2
+    def get_offset(self, side: PositionSide, rotation: Rotation) -> FloatPosition3d:
+        if rotation.is_horizontal:
+            return (
+                -self._step/2 - self._x_indent,
+                -self._step/2 - self._y_indent,
+                -(self._thickness+self._contact_pad_thickness*2)/2
+            )
+        if rotation.is_vertical:
+            return (
+                -self._step/2 - self._y_indent,
+                -self._step/2 - self._x_indent,
+                -(self._thickness+self._contact_pad_thickness*2)/2
+            )
+        raise Exception(f"Invalid rotation for {self.__class__.__name__}")  # TODO custom exception
