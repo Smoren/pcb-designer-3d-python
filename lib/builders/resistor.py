@@ -48,8 +48,8 @@ class ResistorBuilder(BaseMeshBuilder):
         self._color_wire = color_wire
 
     def build(self):
-        left_sphere = trimesh.creation.icosphere(radius=self._radius, subdivisions=4)
-        right_sphere = trimesh.creation.icosphere(radius=self._radius, subdivisions=4)
+        left_sphere = trimesh.creation.icosphere(radius=self._radius)
+        right_sphere = trimesh.creation.icosphere(radius=self._radius)
 
         left_sphere.apply_translation([-self._length/2, 0, 0])
         right_sphere.apply_translation([self._length/2, 0, 0])
@@ -95,4 +95,3 @@ class ResistorBuilder(BaseMeshBuilder):
             return 0, -self._radius, self._offset_z
 
         return -self._radius, 0, self._offset_z
-

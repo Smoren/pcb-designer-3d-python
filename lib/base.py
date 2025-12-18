@@ -3,7 +3,7 @@ import inspect
 import os
 import re
 from enum import Enum
-from typing import Tuple
+from typing import Tuple, Dict, Optional
 
 import trimesh
 from trimeshtools.move import move_to_bound
@@ -47,6 +47,7 @@ class BaseMeshBuilder(abc.ABC):
 
 
 class CachedMeshBuilder(BaseMeshBuilder):
+    _map: Dict[str, trimesh.Trimesh] = {}
     _mesh_builder: BaseMeshBuilder
     _dir_path: str
 
@@ -57,12 +58,19 @@ class CachedMeshBuilder(BaseMeshBuilder):
             os.makedirs(dir_path, exist_ok=True)
 
     def build(self):
+        if self.cache_key in CachedMeshBuilder._map:
+            return CachedMeshBuilder._map[self.cache_key].copy()
+
         file_path = os.path.join(self._dir_path, f'{self.cache_key}.obj')
         if os.path.exists(file_path):
-            return trimesh.load(file_path)
+            result = trimesh.load(file_path)
+            assert isinstance(result, trimesh.Trimesh)
+            CachedMeshBuilder._map[self.cache_key] = result
+            return result
 
         mesh = self._mesh_builder.build()
         mesh.export(file_path)
+        CachedMeshBuilder._map[self.cache_key] = mesh
         return mesh
 
     @property

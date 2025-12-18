@@ -13,12 +13,14 @@ if __name__ == '__main__':
     placer = GridPlacer(BOARD_GRID_STEP, (0, 0, 0))
 
     board_builder = create_board_builder(14, 9, x_indent=1.2, y_indent=1.2)
-    resistor_builder = create_resistor_builder(AxisDirection.ALONG_Y)
+    horizontal_resistor_builder = create_resistor_builder(AxisDirection.ALONG_X)
+    vertical_resistor_builder = create_resistor_builder(AxisDirection.ALONG_Y)
 
     board_mesh = placer.place(board_builder, (0, 0), PositionSide.TOP)
-    resistor_mesh = placer.place(resistor_builder, (2, 3), PositionSide.TOP)
+    resistor_mesh1 = placer.place(horizontal_resistor_builder, (2, 3), PositionSide.TOP)
+    resistor_mesh2 = placer.place(vertical_resistor_builder, (5, 4), PositionSide.TOP)
 
-    final_mesh = concatenate_meshes(board_mesh, resistor_mesh)
+    final_mesh = concatenate_meshes(board_mesh, resistor_mesh1, resistor_mesh2)
     fix_all(final_mesh)
 
     print('is_watertight =', final_mesh.is_watertight)
