@@ -1,15 +1,14 @@
 import math
 
 import trimesh
-from trimeshtools.combine import union_meshes, concatenate_meshes
+from trimeshtools.combine import union_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_matrix_for_z
-from trimeshtools.show import show_mesh
 
 from lib.constants import CYLINDER_SECTIONS
 
 
-def create_bounded_pipe(pipe_radius: float, bond_radius: float, horizontal_length: float, vertical_length: float):
+def create_bounded_pipe_mesh(pipe_radius: float, bond_radius: float, horizontal_length: float, vertical_length: float):
     vertical_cylinder = trimesh.creation.cylinder(radius=pipe_radius, height=vertical_length - bond_radius, sections=CYLINDER_SECTIONS)
     horizontal_cylinder = trimesh.creation.cylinder(radius=pipe_radius, height=horizontal_length - bond_radius, sections=CYLINDER_SECTIONS)
     horizontal_cylinder.apply_transform(create_rotation_matrix_for_x(math.pi / 2))

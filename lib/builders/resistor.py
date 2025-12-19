@@ -8,7 +8,7 @@ from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_ma
 
 from lib.base import BaseMeshBuilder, Rotation, FloatPosition3d, PositionSide
 from lib.constants import CYLINDER_SECTIONS
-from lib.utils import create_bounded_pipe
+from lib.utils.mesh import create_bounded_pipe_mesh
 
 
 class ResistorBuilder(BaseMeshBuilder):
@@ -58,7 +58,7 @@ class ResistorBuilder(BaseMeshBuilder):
         final_mesh = union_meshes(left_sphere, cylinder, right_sphere)
         move_to_bound(final_mesh, 0, 0)
 
-        left_wire = create_bounded_pipe(pipe_radius=self._wire_contact_radius, bond_radius=self._wire_bond_radius, horizontal_length=self._wire_horizontal_length, vertical_length=self._wire_vertical_length)
+        left_wire = create_bounded_pipe_mesh(pipe_radius=self._wire_contact_radius, bond_radius=self._wire_bond_radius, horizontal_length=self._wire_horizontal_length, vertical_length=self._wire_vertical_length)
         right_wire = left_wire.copy().apply_transform(create_rotation_matrix_for_z(math.pi))
         center_wire = trimesh.creation.cylinder(radius=self._wire_contact_radius, height=self._length, sections=CYLINDER_SECTIONS)
         center_wire.apply_transform(create_rotation_matrix_for_x(math.pi/2))
