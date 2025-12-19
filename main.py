@@ -3,7 +3,7 @@ import trimesh
 from trimeshtools.combine import concatenate_meshes
 from trimeshtools.show import show_mesh
 
-from lib.base import GridPlacer, PositionSide, Rotation, CachedBuilderManager
+from lib.base import GridPlacer, PositionSide, Rotation, CachedBuilderManager, TransparentBuildManager
 from lib.factories.board import create_board_builder
 from lib.factories.chip import create_chip_builder
 from lib.constants import BOARD_GRID_STEP, LED_COLOR_BLUE, LED_COLOR_ORANGE
@@ -11,8 +11,8 @@ from lib.factories.led import create_led_builder
 from lib.factories.resistor import create_resistor_builder
 
 def create_test() -> trimesh.Trimesh:
-    # build_manager = TransparentBuildManager()
-    build_manager = CachedBuilderManager()
+    build_manager = TransparentBuildManager()
+    # build_manager = CachedBuilderManager()
 
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
@@ -71,8 +71,8 @@ def create_my() -> trimesh.Trimesh:
 if __name__ == '__main__':
     file_name = 'test'
 
-    # final_mesh = create_test()
-    final_mesh = create_my()
+    final_mesh = create_test()
+    # final_mesh = create_my()
 
     print('is_watertight =', final_mesh.is_watertight)
     print('is_volume =', final_mesh.is_volume)
