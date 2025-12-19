@@ -2,6 +2,7 @@ import numpy as np
 import trimesh
 
 from lib.base import BaseMeshBuilder, FloatPosition3d, Rotation, PositionSide
+from lib.utils.mesh import create_pin_mesh
 
 
 class ChipBuilder(BaseMeshBuilder):
@@ -30,6 +31,8 @@ class ChipBuilder(BaseMeshBuilder):
 
     def build(self) -> trimesh.Trimesh:
         box_mesh = trimesh.creation.box([self._x_count*self._step, self._y_count*self._step, self._thickness])
+        pin_mesh = create_pin_mesh(thickness=0.5, horizontal_length=1.0, vertical_length=4.0, top_width=1.0, bottom_width=0.5)
+        return pin_mesh
         return box_mesh
 
     def get_offset(self, side: PositionSide, rotation: Rotation) -> FloatPosition3d:
