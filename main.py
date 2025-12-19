@@ -23,16 +23,17 @@ def create_test() -> trimesh.Trimesh:
     orange_led_builder = create_led_builder(LED_COLOR_ORANGE)
 
     board_mesh = placer.place(board_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
-    resistor_mesh1 = placer.place(resistor_builder, (1, 2), PositionSide.TOP, Rotation.NO_ROTATION)
-    resistor_mesh2 = placer.place(resistor_builder, (13, 3), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90)
-    resistor_mesh3 = placer.place(resistor_builder, (13, 4), PositionSide.BOTTOM, Rotation.ROTATE_CLOCKWISE_90)
+    # resistor_mesh1 = placer.place(resistor_builder, (1, 2), PositionSide.TOP, Rotation.NO_ROTATION)
+    # resistor_mesh2 = placer.place(resistor_builder, (13, 3), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90)
+    # resistor_mesh3 = placer.place(resistor_builder, (13, 4), PositionSide.BOTTOM, Rotation.ROTATE_CLOCKWISE_90)
     chip_mesh = placer.place(chip_builder, (2, 3), PositionSide.TOP, Rotation.NO_ROTATION)
-    led_blue_mesh = placer.place(blue_led_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
-    led_orange_mesh = placer.place(orange_led_builder, (2, 0), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90)
+    # led_blue_mesh = placer.place(blue_led_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
+    # led_orange_mesh = placer.place(orange_led_builder, (2, 0), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90)
 
     # final_mesh = concatenate_meshes(board_mesh, resistor_mesh1, resistor_mesh2, resistor_mesh3)
     # final_mesh = concatenate_meshes(board_mesh, resistor_mesh1, resistor_mesh2, resistor_mesh3, led_blue_mesh, led_orange_mesh)
     final_mesh = concatenate_meshes(board_mesh, chip_mesh)
+    # final_mesh = concatenate_meshes(chip_mesh)
 
     # fix_all(final_mesh)
     return final_mesh

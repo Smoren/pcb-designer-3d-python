@@ -33,12 +33,16 @@ def create_bounded_pipe_mesh(pipe_radius: float, bond_radius: float, horizontal_
     return final_mesh
 
 
-def create_pin_mesh(thickness: float, horizontal_length: float, vertical_length: float, top_width: float, bottom_width: float) -> trimesh.Trimesh:
+def create_pin_mesh(thickness: float, horizontal_length: float, top_vertical_length: float, bottom_vertical_length: float, top_width: float, bottom_width: float) -> trimesh.Trimesh:
     top_horizontal_mesh = trimesh.creation.box([horizontal_length, top_width, thickness])
-    top_vertical_mesh = trimesh.creation.box([vertical_length, top_width, thickness])
-    move_to_bound(top_horizontal_mesh, -1, 0, 1)
-    move_to_bound(top_vertical_mesh, 1, 0, 1)
+    top_vertical_mesh = trimesh.creation.box([thickness, top_width, top_vertical_length])
+    move_to_bound(top_horizontal_mesh, -1, 0, -1)
+    move_to_bound(top_vertical_mesh, 1, 0, -1)
     top_mesh = union_meshes(top_vertical_mesh, top_horizontal_mesh)
 
-    # TODO implement completely
-    return top_mesh
+    bottom_mesh = trimesh.creation.box([thickness, bottom_width, bottom_vertical_length])
+    move_to_bound(top_mesh, -1, 0, 1)
+    move_to_bound(bottom_mesh, -1, 0, -1)
+
+    final_mesh = union_meshes(top_mesh, bottom_mesh)
+    return final_mesh
