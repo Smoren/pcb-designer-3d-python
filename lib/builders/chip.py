@@ -5,7 +5,6 @@ import trimesh
 from trimeshtools.combine import union_meshes, concatenate_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_z, create_mirror_matrix
-from trimeshtools.show import show_mesh
 
 from lib.base import BaseMeshBuilder, FloatPosition3d, Rotation, PositionSide
 from lib.utils.mesh import create_pin_mesh
@@ -14,8 +13,16 @@ from lib.utils.mesh import create_pin_mesh
 class ChipBuilder(BaseMeshBuilder):
     _x_count: int
     _y_count: int
-    _thickness: float
     _step: float
+    _thickness: float
+    _pit_radius: float
+    _pit_height: float
+    _pin_thickness: float
+    _pin_top_vertical_length: float
+    _pin_bottom_vertical_length: float
+    _pin_top_width: float
+    _pin_bottom_width: float
+    _offset_z: float
     _color: np.ndarray
     _contacts_color: np.ndarray
 
@@ -23,37 +30,50 @@ class ChipBuilder(BaseMeshBuilder):
         self,
         x_count: int,
         y_count: int,
-        thickness: float,
         step: float,
+        thickness: float,
+        pit_radius: float,
+        pit_height: float,
+        pin_thickness: float,
+        pin_top_vertical_length: float,
+        pin_bottom_vertical_length: float,
+        pin_top_width: float,
+        pin_bottom_width: float,
+        offset_z: float,
         color: np.ndarray,
         contacts_color: np.ndarray
     ):
         self._x_count = x_count
         self._y_count = y_count
-        self._thickness = thickness
         self._step = step
+        self._thickness = thickness
+        self._pit_radius = pit_radius
+        self._pit_height = pit_height
+        self._pin_thickness = pin_thickness
+        self._pin_top_vertical_length = pin_top_vertical_length
+        self._pin_bottom_vertical_length = pin_bottom_vertical_length
+        self._pin_top_width = pin_top_width
+        self._pin_bottom_width = pin_bottom_width
+        self._offset_z = offset_z
         self._color = color
         self._contacts_color = contacts_color
 
     def build(self) -> trimesh.Trimesh:
-        # TODO to config
-        PIN_THICKNESS = 0.3
-        HORIZONTAL_LENGTH = 1.0
-        TOP_VERTICAL_LENGTH = 4.0
-        BOTTOM_VERTICAL_LENGTH = 5.0
-        TOP_WIDTH = 2.0
-        BOTTOM_WIDTH = 0.5
-
         box_mesh = trimesh.creation.box([self._x_count*self._step, self._y_count*self._step, self._thickness])
+        box_diff = trimesh.creation.cylinder(radius=self._pit_radius, height=self._pit_height)
+        move_to_bound(box_mesh, -1, 0, -1)
+        move_to_bound(box_diff, 0, 0, -1)
+        box_mesh = box_mesh.difference(box_diff)
         box_mesh.visual.face_colors = self._color
 
+        pins_offset = (box_mesh.extents[0] - ((self._x_count-1)*self._step + self._pin_top_width))/2
+        pin_horizontal_length = self._step/2 - self._pin_thickness
+
         move_to_bound(box_mesh, 1, 1, 1)
-        pin_mesh = create_pin_mesh(thickness=PIN_THICKNESS, horizontal_length=HORIZONTAL_LENGTH, top_vertical_length=TOP_VERTICAL_LENGTH, bottom_vertical_length=BOTTOM_VERTICAL_LENGTH, top_width=TOP_WIDTH, bottom_width=BOTTOM_WIDTH)
+        pin_mesh = create_pin_mesh(thickness=self._pin_thickness, horizontal_length=pin_horizontal_length, top_vertical_length=self._pin_top_vertical_length, bottom_vertical_length=self._pin_bottom_vertical_length, top_width=self._pin_top_width, bottom_width=self._pin_bottom_width)
         pin_mesh = pin_mesh.copy().apply_transform(create_rotation_matrix_for_z(-math.pi/2))
 
         move_to_bound(pin_mesh, 1, -1, -1)
-
-        pins_offset = (box_mesh.extents[0] - ((self._x_count-1)*self._step + TOP_WIDTH))/2
 
         left_pins = []
         for i in range(self._x_count):
@@ -72,4 +92,8 @@ class ChipBuilder(BaseMeshBuilder):
         return final_mesh
 
     def get_offset(self, side: PositionSide, rotation: Rotation) -> FloatPosition3d:
-        return -self._step/2, 0, 0  # TODO fix
+        if rotation.is_horizontal:
+            return -self._step/2, 0, self._offset_z
+        if rotation.is_vertical:
+            return 0, -self._step/2, self._offset_z
+        raise Exception(f"Invalid rotation for {self.__class__.__name__}")  # TODO custom exception
