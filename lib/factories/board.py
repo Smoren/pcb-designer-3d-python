@@ -6,8 +6,8 @@ from lib.factories.constants import BOARD_GRID_STEP, BOARD_PAD_RADIUS, BOARD_THI
 
 def create_board_builder(x_count: int, y_count: int, x_indent: float = 0, y_indent: float = 0) -> BaseMeshBuilder:
     return BoardBuilder(
-        x_count,
-        y_count,
+        x_count=x_count,
+        y_count=y_count,
         step=BOARD_GRID_STEP,
         pad_radius=BOARD_PAD_RADIUS,
         contact_pad_radius=BOARD_CONTACT_PAD_RADIUS,
