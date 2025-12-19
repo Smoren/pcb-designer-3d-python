@@ -12,8 +12,8 @@ from lib.factories.led import create_led_builder
 from lib.factories.resistor import create_resistor_builder
 
 def create_test() -> trimesh.Trimesh:
-    build_manager = TransparentBuildManager()
-    # build_manager = CachedBuilderManager()
+    # build_manager = TransparentBuildManager()
+    build_manager = CachedBuilderManager()
 
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
@@ -32,7 +32,8 @@ def create_test() -> trimesh.Trimesh:
     led_orange_mesh = placer.place(orange_led_builder, (2, 0), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90)
 
     # final_mesh = concatenate_meshes(board_mesh, resistor_mesh1, resistor_mesh2, resistor_mesh3)
-    final_mesh = concatenate_meshes(board_mesh, resistor_mesh1, resistor_mesh2, resistor_mesh3, led_blue_mesh, led_orange_mesh)
+    # final_mesh = concatenate_meshes(board_mesh, resistor_mesh1, resistor_mesh2, resistor_mesh3, led_blue_mesh, led_orange_mesh)
+    final_mesh = concatenate_meshes(board_mesh, chip_mesh)
 
     # fix_all(final_mesh)
     return final_mesh
@@ -71,8 +72,8 @@ def create_my() -> trimesh.Trimesh:
 if __name__ == '__main__':
     file_name = 'test'
 
-    # final_mesh = create_test()
-    final_mesh = create_my()
+    final_mesh = create_test()
+    # final_mesh = create_my()
 
     print('is_watertight =', final_mesh.is_watertight)
     print('is_volume =', final_mesh.is_volume)

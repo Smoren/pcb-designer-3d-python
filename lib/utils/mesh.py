@@ -8,7 +8,7 @@ from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_ma
 from lib.constants import CYLINDER_SECTIONS
 
 
-def create_bounded_pipe_mesh(pipe_radius: float, bond_radius: float, horizontal_length: float, vertical_length: float):
+def create_bounded_pipe_mesh(pipe_radius: float, bond_radius: float, horizontal_length: float, vertical_length: float) -> trimesh.Trimesh:
     vertical_cylinder = trimesh.creation.cylinder(radius=pipe_radius, height=vertical_length - bond_radius, sections=CYLINDER_SECTIONS)
     horizontal_cylinder = trimesh.creation.cylinder(radius=pipe_radius, height=horizontal_length - bond_radius, sections=CYLINDER_SECTIONS)
     horizontal_cylinder.apply_transform(create_rotation_matrix_for_x(math.pi / 2))
@@ -31,3 +31,14 @@ def create_bounded_pipe_mesh(pipe_radius: float, bond_radius: float, horizontal_
     final_mesh.apply_translation([0, 0, pipe_radius])
 
     return final_mesh
+
+
+def create_pin_mesh(thickness: float, horizontal_length: float, vertical_length: float, top_width: float, bottom_width: float) -> trimesh.Trimesh:
+    top_horizontal_mesh = trimesh.creation.box([horizontal_length, top_width, thickness])
+    top_vertical_mesh = trimesh.creation.box([vertical_length, top_width, thickness])
+    move_to_bound(top_horizontal_mesh, -1, 0, 1)
+    move_to_bound(top_vertical_mesh, 1, 0, 1)
+    top_mesh = union_meshes(top_vertical_mesh, top_horizontal_mesh)
+
+    # TODO implement completely
+    return top_mesh

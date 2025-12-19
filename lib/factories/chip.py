@@ -11,6 +11,6 @@ def create_chip_builder(x_count: int, y_count: int) -> BaseMeshBuilder:
         y_count=y_count,
         thickness=2,
         step=BOARD_GRID_STEP,
-        color=np.ndarray([30, 30, 30, 255]),
+        color=np.array([30, 30, 30, 255]),
         contacts_color=WIRE_CONTACT_COLOR,
     )
