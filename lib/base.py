@@ -60,58 +60,55 @@ class BaseMeshBuilder(abc.ABC):
         return 0, 0, 0
 
 
-class CachedMeshBuilder(BaseMeshBuilder):
-    _map: Dict[str, trimesh.Trimesh] = {}
-    _mesh_builder: BaseMeshBuilder
-    _dir_path: str
+class BaseBuildManager(abc.ABC):
+    @abc.abstractmethod
+    def build(self, builder: BaseMeshBuilder) -> trimesh.Trimesh:
+        raise NotImplementedError()
 
-    def __init__(self, mesh_builder: BaseMeshBuilder, dir_path: str = CACHE_DIR):
-        self._mesh_builder = mesh_builder
+
+class TransparentBuildManager(BaseBuildManager):
+    def build(self, builder: BaseMeshBuilder) -> trimesh.Trimesh:
+        return builder.build()
+
+
+class CachedBuilderManager(BaseBuildManager):
+    _MAP: Dict[str, trimesh.Trimesh] = {}
+    _dir_path: str
+    
+    def __init__(self, dir_path: str = CACHE_DIR):
         self._dir_path = dir_path
         if not os.path.exists(dir_path):
             os.makedirs(dir_path, exist_ok=True)
+    
+    def build(self, builder: BaseMeshBuilder) -> trimesh.Trimesh:
+        if builder.cache_key in CachedBuilderManager._MAP:
+            return CachedBuilderManager._MAP[builder.cache_key].copy()
 
-    def build(self) -> trimesh.Trimesh:
-        if self.cache_key in CachedMeshBuilder._map:
-            return CachedMeshBuilder._map[self.cache_key].copy()
-
-        file_path = os.path.join(self._dir_path, f'{self.cache_key}.obj')
+        file_path = os.path.join(self._dir_path, f'{builder.cache_key}.obj')
         if os.path.exists(file_path):
             result = trimesh.load(file_path)
             assert isinstance(result, trimesh.Trimesh)
-            CachedMeshBuilder._map[self.cache_key] = result
+            CachedBuilderManager._MAP[builder.cache_key] = result
             return result
 
-        mesh = self._mesh_builder.build()
+        mesh = builder.build()
         mesh.export(file_path)
-        CachedMeshBuilder._map[self.cache_key] = mesh
+        CachedBuilderManager._MAP[builder.cache_key] = mesh
         return mesh
-
-    def get_offset(self, side: PositionSide, rotation: Rotation) -> FloatPosition3d:
-        return self._mesh_builder.get_offset(side, rotation)
-
-    @property
-    def cache_key(self) -> str:
-        return self._format_cache_key(self._mesh_builder.cache_key)
-
-    @staticmethod
-    def _format_cache_key(key: str) -> str:
-        result = re.sub(r'[^a-zA-Z0-9._]', '_', key)
-        result = re.sub(r'[_]{2,}', '_', result)
-        result = result.strip('_')
-        return result
 
 
 class GridPlacer:
+    _build_manager: BaseBuildManager
     _step: float
     _offset: FloatPosition3d
 
-    def __init__(self, step: float, offset: FloatPosition3d):
+    def __init__(self, build_manager: BaseBuildManager, step: float, offset: FloatPosition3d):
+        self._build_manager = build_manager
         self._step = step
         self._offset = offset
 
     def place(self, mesh_builder: BaseMeshBuilder, position: IntPosition2d, side: PositionSide, rotation: Rotation) -> trimesh.Trimesh:
-        mesh = mesh_builder.build()
+        mesh = self._build_manager.build(mesh_builder)
 
         if rotation != rotation.NO_ROTATION:
             mesh.apply_transform(create_rotation_matrix_for_z(-rotation.angle))

@@ -4,7 +4,7 @@ from trimeshtools.combine import concatenate_meshes
 from trimeshtools.show import show_mesh
 from trimeshtools.utils import fix_all
 
-from lib.base import GridPlacer, PositionSide, Rotation
+from lib.base import GridPlacer, PositionSide, Rotation, TransparentBuildManager, CachedBuilderManager
 from lib.factories.board import create_board_builder
 from lib.factories.chip import create_chip_builder
 from lib.factories.constants import BOARD_GRID_STEP, LED_COLOR_BLUE, LED_COLOR_ORANGE
@@ -12,7 +12,10 @@ from lib.factories.led import create_led_builder
 from lib.factories.resistor import create_resistor_builder
 
 def create_test() -> trimesh.Trimesh:
-    placer = GridPlacer(BOARD_GRID_STEP, (0, 0, 0))
+    build_manager = TransparentBuildManager()
+    # build_manager = CachedBuilderManager()
+
+    placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
     board_builder = create_board_builder(14, 9, x_indent=1.2, y_indent=1.2)
     resistor_builder = create_resistor_builder()
@@ -36,7 +39,10 @@ def create_test() -> trimesh.Trimesh:
 
 
 def create_my() -> trimesh.Trimesh:
-    placer = GridPlacer(BOARD_GRID_STEP, (0, 0, 0))
+    # build_manager = TransparentBuildManager()
+    build_manager = CachedBuilderManager()
+
+    placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
     board_builder = create_board_builder(14, 9, x_indent=1.2, y_indent=1.2)
     resistor_220om_builder = create_resistor_builder(np.array([0, 0, 100, 255]))

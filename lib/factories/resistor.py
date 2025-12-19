@@ -1,6 +1,6 @@
 import numpy as np
 
-from lib.base import CachedMeshBuilder, Rotation, BaseMeshBuilder
+from lib.base import BaseMeshBuilder
 from lib.builders.resistor import ResistorBuilder
 from lib.factories.constants import BOARD_GRID_STEP, RESISTOR_STEPS_COUNT, RESISTOR_RADIUS, WIRE_CONTACT_RADIUS, \
     RESISTOR_WIRE_BOND_RADIUS, BOARD_PAD_RADIUS, BOARD_THICKNESS, WIRE_CONTACT_TOLERANCE, BOARD_CONTACT_PAD_THICKNESS, \
@@ -8,7 +8,7 @@ from lib.factories.constants import BOARD_GRID_STEP, RESISTOR_STEPS_COUNT, RESIS
 
 
 def create_resistor_builder(color: np.ndarray = RESISTOR_DEFAULT_COLOR) -> BaseMeshBuilder:
-    return CachedMeshBuilder(ResistorBuilder(
+    return ResistorBuilder(
         length=BOARD_GRID_STEP * RESISTOR_STEPS_COUNT,
         radius=RESISTOR_RADIUS,
         wire_contact_radius=WIRE_CONTACT_RADIUS,
@@ -18,4 +18,4 @@ def create_resistor_builder(color: np.ndarray = RESISTOR_DEFAULT_COLOR) -> BaseM
         offset_z=-BOARD_THICKNESS/2 - WIRE_CONTACT_TOLERANCE,
         color=color,
         color_contact=WIRE_CONTACT_COLOR,
-    ))
+    )
