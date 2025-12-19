@@ -6,7 +6,7 @@ from trimeshtools.show import show_mesh
 from lib.base import GridPlacer, PositionSide, Rotation, CachedBuilderManager
 from lib.factories.board import create_board_builder
 from lib.factories.chip import create_chip_builder
-from lib.utils.constants import BOARD_GRID_STEP, LED_COLOR_BLUE, LED_COLOR_ORANGE
+from lib.constants import BOARD_GRID_STEP, LED_COLOR_BLUE, LED_COLOR_ORANGE
 from lib.factories.led import create_led_builder
 from lib.factories.resistor import create_resistor_builder
 

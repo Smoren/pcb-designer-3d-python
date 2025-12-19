@@ -2,7 +2,7 @@ import numpy as np
 
 from lib.base import BaseMeshBuilder
 from lib.builders.led import LedBuilder
-from lib.utils.constants import LED_RADIUS, LED_HEIGHT, LED_ANODE_LENGTH, LED_CATHODE_LENGTH, BOARD_GRID_STEP, \
+from lib.constants import LED_RADIUS, LED_HEIGHT, LED_ANODE_LENGTH, LED_CATHODE_LENGTH, BOARD_GRID_STEP, \
     WIRE_CONTACT_RADIUS, BOARD_THICKNESS, WIRE_CONTACT_TOLERANCE, WIRE_CONTACT_COLOR, BOARD_CONTACT_PAD_RADIUS
 
 

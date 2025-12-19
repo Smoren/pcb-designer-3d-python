@@ -5,7 +5,7 @@ from trimeshtools.combine import union_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_matrix_for_z
 
-from lib.utils.constants import CYLINDER_SECTIONS
+from lib.constants import CYLINDER_SECTIONS
 
 
 def create_bounded_pipe_mesh(pipe_radius: float, bond_radius: float, horizontal_length: float, vertical_length: float) -> trimesh.Trimesh:

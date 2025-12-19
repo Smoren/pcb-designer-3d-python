@@ -4,7 +4,7 @@ from trimeshtools.combine import union_meshes, concatenate_meshes
 from trimeshtools.move import move_to_bound
 
 from lib.base import BaseMeshBuilder, PositionSide, Rotation, FloatPosition3d
-from lib.utils.constants import CYLINDER_SECTIONS
+from lib.constants import CYLINDER_SECTIONS
 
 
 class LedBuilder(BaseMeshBuilder):

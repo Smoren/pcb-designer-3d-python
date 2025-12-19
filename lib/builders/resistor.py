@@ -7,7 +7,7 @@ from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_matrix_for_z
 
 from lib.base import BaseMeshBuilder, Rotation, FloatPosition3d, PositionSide
-from lib.utils.constants import CYLINDER_SECTIONS
+from lib.constants import CYLINDER_SECTIONS
 from lib.utils.mesh import create_bounded_pipe_mesh
 
 

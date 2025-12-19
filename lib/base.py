@@ -1,7 +1,6 @@
 import abc
 import math
 import os
-import re
 from enum import Enum
 from typing import Tuple, Dict
 
@@ -9,7 +8,7 @@ import trimesh
 from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_matrix_for_z
 
-from lib.utils.constants import CACHE_DIR
+from lib.constants import CACHE_DIR
 
 FloatPosition3d = Tuple[float, float, float]
 IntPosition3d = Tuple[int, int, int]

@@ -2,7 +2,7 @@ import numpy as np
 
 from lib.base import BaseMeshBuilder
 from lib.builders.chip import ChipBuilder
-from lib.utils.constants import BOARD_GRID_STEP, WIRE_CONTACT_COLOR
+from lib.constants import BOARD_GRID_STEP, WIRE_CONTACT_COLOR
 
 
 def create_chip_builder(x_count: int, y_count: int) -> BaseMeshBuilder:
