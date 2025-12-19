@@ -1,6 +1,6 @@
 from lib.base import BaseMeshBuilder
 from lib.builders.board import BoardBuilder
-from lib.factories.constants import BOARD_GRID_STEP, BOARD_PAD_RADIUS, BOARD_THICKNESS, BOARD_CONTACT_PAD_RADIUS, \
+from lib.utils.constants import BOARD_GRID_STEP, BOARD_PAD_RADIUS, BOARD_THICKNESS, BOARD_CONTACT_PAD_RADIUS, \
     BOARD_CONTACT_PAD_THICKNESS, BOARD_COLOR, BOARD_CONTACT_PAD_COLOR
 
 

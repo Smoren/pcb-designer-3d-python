@@ -1,4 +1,9 @@
+import os
 import numpy as np
+
+CACHE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'cache')
+
+CYLINDER_SECTIONS = 32
 
 BOARD_GRID_STEP = 2.54
 BOARD_PAD_RADIUS = 0.5

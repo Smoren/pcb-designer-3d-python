@@ -9,7 +9,7 @@ import trimesh
 from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_matrix_for_z
 
-from lib.constants import CACHE_DIR
+from lib.utils.constants import CACHE_DIR
 
 FloatPosition3d = Tuple[float, float, float]
 IntPosition3d = Tuple[int, int, int]
