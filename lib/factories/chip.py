@@ -4,7 +4,7 @@ from lib.base import BaseMeshBuilder
 from lib.builders.chip import ChipBuilder
 from lib.constants import BOARD_GRID_STEP, WIRE_CONTACT_COLOR, CHIP_DEFAULT_COLOR, CHIP_PIN_THICKNESS, \
     CHIP_PIN_TOP_VERTICAL_LENGTH, CHIP_PIN_BOTTOM_VERTICAL_LENGTH, CHIP_PIN_TOP_WIDTH, CHIP_PIN_BOTTOM_WIDTH, \
-    CHIP_PIT_RADIUS, CHIP_PIT_HEIGHT, CHIP_THICKNESS, BOARD_THICKNESS, BOARD_CONTACT_PAD_THICKNESS
+    CHIP_PIT_RADIUS, CHIP_PIT_HEIGHT, CHIP_THICKNESS, BOARD_THICKNESS
 
 
 def create_chip_builder(x_count: int, y_count: int, color: np.ndarray = CHIP_DEFAULT_COLOR) -> BaseMeshBuilder:
@@ -20,7 +20,7 @@ def create_chip_builder(x_count: int, y_count: int, color: np.ndarray = CHIP_DEF
         pin_top_width=CHIP_PIN_TOP_WIDTH,
         pin_bottom_width=CHIP_PIN_BOTTOM_WIDTH,
         step=BOARD_GRID_STEP,
-        offset_z=BOARD_THICKNESS/2 + BOARD_CONTACT_PAD_THICKNESS - CHIP_PIN_BOTTOM_VERTICAL_LENGTH,
+        offset_z=BOARD_THICKNESS/2 - CHIP_PIN_BOTTOM_VERTICAL_LENGTH,
         color=color,
         contacts_color=WIRE_CONTACT_COLOR,
     )

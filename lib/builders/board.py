@@ -47,11 +47,11 @@ class BoardBuilder(BaseMeshBuilder):
         self._contact_pad_color = contact_pad_color
 
     def build(self) -> trimesh.Trimesh:
-        board_mesh = trimesh.creation.box([self._step*self._x_count + self._x_indent*2, self._step*self._y_count + self._y_indent*2, self._thickness])
+        board_mesh = trimesh.creation.box([self._step*self._x_count + self._x_indent*2, self._step*self._y_count + self._y_indent*2, self._thickness-self._contact_pad_thickness*2])
 
         move_to_bound(board_mesh, 1, 1, 0)
         diff_mesh = trimesh.creation.cylinder(radius=self._pad_radius, height=self._thickness*2, sections=CYLINDER_SECTIONS)
-        union_mesh = trimesh.creation.cylinder(radius=self._contact_pad_radius, height=self._thickness + self._contact_pad_thickness*2, sections=CYLINDER_SECTIONS)
+        union_mesh = trimesh.creation.cylinder(radius=self._contact_pad_radius, height=self._thickness, sections=CYLINDER_SECTIONS)
         union_mesh = union_mesh.difference(diff_mesh)
 
         diff_mesh = trimesh.creation.cylinder(radius=(self._pad_radius + self._contact_pad_radius)/2, height=self._thickness*2, sections=CYLINDER_SECTIONS)
@@ -84,12 +84,12 @@ class BoardBuilder(BaseMeshBuilder):
             return (
                 -self._step/2 - self._x_indent,
                 -self._step/2 - self._y_indent,
-                -(self._thickness+self._contact_pad_thickness*2)/2
+                -self._thickness/2
             )
         if rotation.is_vertical:
             return (
                 -self._step/2 - self._y_indent,
                 -self._step/2 - self._x_indent,
-                -(self._thickness+self._contact_pad_thickness*2)/2
+                -self._thickness/2
             )
         raise Exception(f"Invalid rotation for {self.__class__.__name__}")  # TODO custom exception

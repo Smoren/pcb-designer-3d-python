@@ -65,8 +65,8 @@ def create_my() -> trimesh.Trimesh:
 if __name__ == '__main__':
     file_name = 'test'
 
-    final_mesh = create_test()
-    # final_mesh = create_my()
+    # final_mesh = create_test()
+    final_mesh = create_my()
 
     print('is_watertight =', final_mesh.is_watertight)
     print('is_volume =', final_mesh.is_volume)
