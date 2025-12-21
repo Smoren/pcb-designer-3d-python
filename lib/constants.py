@@ -5,6 +5,12 @@ CACHE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'cache')
 
 CYLINDER_SECTIONS = 32
 
+COLOR_RED = np.array([255, 0, 0, 255])
+COLOR_GREEN = np.array([0, 255, 0, 255])
+COLOR_BLUE = np.array([0, 0, 255, 255])
+COLOR_ORANGE = np.array([255, 125, 0, 255])
+COLOR_BLACK = [50, 50, 50, 255]
+
 BOARD_GRID_STEP = 2.54
 BOARD_PAD_RADIUS = 0.5
 BOARD_CONTACT_PAD_RADIUS = 1.0
@@ -28,10 +34,6 @@ LED_RADIUS = 1.5
 LED_HEIGHT = 4.45
 LED_ANODE_LENGTH = 18.4
 LED_CATHODE_LENGTH = 16.7
-LED_COLOR_RED = np.array([255, 0, 0, 255])
-LED_COLOR_GREEN = np.array([0, 255, 0, 255])
-LED_COLOR_BLUE = np.array([0, 0, 255, 255])
-LED_COLOR_ORANGE = np.array([255, 125, 0, 255])
 
 CHIP_THICKNESS = 2.0
 CHIP_PIT_RADIUS = 1.0
@@ -51,3 +53,5 @@ SOCKET_PIN_THICKNESS = 0.3
 SOCKET_PIN_HEIGHT = 2.0
 
 TRACK_COLOR = np.array([180, 180, 180, 255])
+
+JUMPER_CONTACT_HEIGHT = 2

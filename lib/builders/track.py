@@ -26,6 +26,8 @@ class TrackBuilder(BaseMeshBuilder):
         offset_z: float,
         color: np.ndarray
     ):
+        assert x_count > 0 and y_count > 0
+
         self._x_count = x_count
         self._y_count = y_count
         self._step = step
