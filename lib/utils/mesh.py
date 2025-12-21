@@ -1,5 +1,6 @@
 import math
 
+import pyvista as pv
 import trimesh
 from trimeshtools.combine import union_meshes
 from trimeshtools.move import move_to_bound
@@ -46,3 +47,18 @@ def create_pin_mesh(thickness: float, horizontal_length: float, top_vertical_len
 
     final_mesh = union_meshes(top_mesh, bottom_mesh)
     return final_mesh
+
+
+def create_text_mesh(text: str, height: float, scale: float = 1.0) -> trimesh.Trimesh:
+    # Создаем текст в PyVista
+    text_mesh = pv.Text3D(text, depth=height)
+
+    # Конвертируем в trimesh
+    vertices = text_mesh.points
+    vertices *= scale
+    faces = text_mesh.faces.reshape(-1, 4)[:, 1:4]  # Преобразуем quad в tri
+
+    # Создаем trimesh объект
+    mesh = trimesh.Trimesh(vertices=vertices, faces=faces)
+
+    return mesh

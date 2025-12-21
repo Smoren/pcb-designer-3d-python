@@ -2,3 +2,4 @@ trimesh[easy]
 trimeshtools
 numpy
 shapely
+pyvista

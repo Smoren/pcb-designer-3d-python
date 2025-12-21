@@ -1,4 +1,5 @@
 import math
+from typing import Optional
 
 import numpy as np
 import trimesh
@@ -8,7 +9,7 @@ from trimeshtools.rotate import create_rotation_matrix_for_x, create_rotation_ma
 
 from lib.base import BaseMeshBuilder, Rotation, FloatPosition3d, PositionSide
 from lib.constants import CYLINDER_SECTIONS
-from lib.utils.mesh import create_bounded_pipe_mesh
+from lib.utils.mesh import create_bounded_pipe_mesh, create_text_mesh
 
 
 class ResistorBuilder(BaseMeshBuilder):
@@ -21,6 +22,7 @@ class ResistorBuilder(BaseMeshBuilder):
     _offset_z: float
     _color: np.ndarray
     _color_contact: np.ndarray
+    _text: Optional[str]
 
     def __init__(
         self,
@@ -33,6 +35,7 @@ class ResistorBuilder(BaseMeshBuilder):
         offset_z: float,
         color: np.ndarray,
         color_contact: np.ndarray,
+        text: Optional[str]
     ):
         self._length = length
         self._radius = radius
@@ -43,6 +46,7 @@ class ResistorBuilder(BaseMeshBuilder):
         self._offset_z = offset_z
         self._color = color
         self._color_contact = color_contact
+        self._text = text
 
     def build(self) -> trimesh.Trimesh:
         left_sphere = trimesh.creation.icosphere(radius=self._radius)
@@ -79,6 +83,12 @@ class ResistorBuilder(BaseMeshBuilder):
 
         final_mesh = concatenate_meshes(final_mesh, contacts_mesh)
         move_to_bound(final_mesh, 0, 0, 0)
+
+        if self._text is not None:
+            text_mesh = create_text_mesh(self._text, 0.1, 0.7)
+            move_to_bound(final_mesh, 0, 0, -1)
+            move_to_bound(text_mesh, 0, 0, 1)
+            final_mesh = concatenate_meshes(final_mesh, text_mesh)
 
         return final_mesh
 

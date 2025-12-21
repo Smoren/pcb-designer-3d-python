@@ -21,12 +21,12 @@ def create_test() -> trimesh.Trimesh:
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
     board_builder = create_board_builder(7, 5, x_indent=1.2, y_indent=1.2)
-    socket_builder = create_socket_builder(4.5, 2, pin_positions=[(2, 1, math.pi/2), (1, 2, 0.0)], color=np.array([50, 50, 50, 255]))
+    chip_builder = create_chip_builder(x_count=7, y_count=2, text="TEST")
 
     board_mesh = placer.place(board_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
-    socket_mesh = placer.place(socket_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
+    chip_mesh = placer.place(chip_builder, (7, 1), PositionSide.TOP, Rotation.ROTATE_COUNTER_CLOCKWISE_90)
 
-    final_mesh = concatenate_meshes(board_mesh, socket_mesh)
+    final_mesh = concatenate_meshes(board_mesh, chip_mesh)
 
     # fix_all(final_mesh)
     return final_mesh
@@ -39,11 +39,11 @@ def create_my() -> trimesh.Trimesh:
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
     board_builder = create_board_builder(14, 9, x_indent=1.2, y_indent=1.2)
-    resistor_220om_builder = create_resistor_builder(np.array([0, 0, 100, 255]))
-    resistor_10kom_builder = create_resistor_builder(np.array([0, 0, 0, 255]))
+    resistor_220om_builder = create_resistor_builder('220 Om', np.array([0, 0, 100, 255]))
+    resistor_10kom_builder = create_resistor_builder('10 kOm', np.array([0, 0, 0, 255]))
     blue_led_builder = create_led_builder(LED_COLOR_BLUE)
     orange_led_builder = create_led_builder(LED_COLOR_ORANGE)
-    chip_builder = create_chip_builder(x_count=7, y_count=2)
+    chip_builder = create_chip_builder(x_count=7, y_count=2, text="74HC32")
     socket_builder = create_socket_builder(4.5, 2, pin_positions=[(2, 1, math.pi/2), (1, 2, 0.0)], color=np.array([50, 50, 50, 255]))
 
     meshes = []
@@ -71,7 +71,7 @@ def create_my() -> trimesh.Trimesh:
 if __name__ == '__main__':
     file_name = 'test'
 
-    final_mesh = create_test()
+    # final_mesh = create_test()
     final_mesh = create_my()
 
     print('is_watertight =', final_mesh.is_watertight)

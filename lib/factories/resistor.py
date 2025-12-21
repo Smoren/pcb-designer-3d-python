@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 
 from lib.base import BaseMeshBuilder
@@ -7,7 +9,7 @@ from lib.constants import BOARD_GRID_STEP, RESISTOR_STEPS_COUNT, RESISTOR_RADIUS
     RESISTOR_TOLERANCE, RESISTOR_DEFAULT_COLOR, WIRE_CONTACT_COLOR
 
 
-def create_resistor_builder(color: np.ndarray = RESISTOR_DEFAULT_COLOR) -> BaseMeshBuilder:
+def create_resistor_builder(text: Optional[str] = None, color: np.ndarray = RESISTOR_DEFAULT_COLOR) -> BaseMeshBuilder:
     return ResistorBuilder(
         length=BOARD_GRID_STEP * RESISTOR_STEPS_COUNT,
         radius=RESISTOR_RADIUS,
@@ -18,4 +20,5 @@ def create_resistor_builder(color: np.ndarray = RESISTOR_DEFAULT_COLOR) -> BaseM
         offset_z=-BOARD_THICKNESS/2 - WIRE_CONTACT_TOLERANCE,
         color=color,
         color_contact=WIRE_CONTACT_COLOR,
+        text=text,
     )

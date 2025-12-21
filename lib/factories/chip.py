@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 
 from lib.base import BaseMeshBuilder
@@ -7,7 +9,7 @@ from lib.constants import BOARD_GRID_STEP, WIRE_CONTACT_COLOR, CHIP_DEFAULT_COLO
     CHIP_PIT_RADIUS, CHIP_PIT_HEIGHT, CHIP_THICKNESS, BOARD_THICKNESS
 
 
-def create_chip_builder(x_count: int, y_count: int, color: np.ndarray = CHIP_DEFAULT_COLOR) -> BaseMeshBuilder:
+def create_chip_builder(x_count: int, y_count: int, text: Optional[str] = None, color: np.ndarray = CHIP_DEFAULT_COLOR) -> BaseMeshBuilder:
     return ChipBuilder(
         x_count=x_count,
         y_count=y_count,
@@ -23,4 +25,5 @@ def create_chip_builder(x_count: int, y_count: int, color: np.ndarray = CHIP_DEF
         offset_z=BOARD_THICKNESS/2 - CHIP_PIN_BOTTOM_VERTICAL_LENGTH,
         color=color,
         contacts_color=WIRE_CONTACT_COLOR,
+        text=text,
     )
