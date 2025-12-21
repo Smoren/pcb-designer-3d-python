@@ -85,15 +85,15 @@ class CachedBuilderManager(BaseBuildManager):
 
         file_path = os.path.join(self._dir_path, f'{builder.cache_key}.obj')
         if os.path.exists(file_path):
-            result = trimesh.load(file_path)
-            assert isinstance(result, trimesh.Trimesh)
-            CachedBuilderManager._MAP[builder.cache_key] = result
-            return result
+            mesh = trimesh.load(file_path)
+            assert isinstance(mesh, trimesh.Trimesh)
+            CachedBuilderManager._MAP[builder.cache_key] = mesh
+            return mesh.copy()
 
         mesh = builder.build()
         mesh.export(file_path)
         CachedBuilderManager._MAP[builder.cache_key] = mesh
-        return mesh
+        return mesh.copy()
 
 
 class GridPlacer:

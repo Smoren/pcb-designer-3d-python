@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 import trimesh
 from trimeshtools.combine import concatenate_meshes
@@ -19,10 +21,10 @@ def create_test() -> trimesh.Trimesh:
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
     board_builder = create_board_builder(7, 5, x_indent=1.2, y_indent=1.2)
-    socket_builder = create_socket_builder()
+    socket_builder = create_socket_builder(4.5, 2, pin_positions=[(2, 1, math.pi/2), (1, 2, 0.0)], color=np.array([50, 50, 50, 255]))
 
     board_mesh = placer.place(board_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
-    socket_mesh = placer.place(socket_builder, (4, 0), PositionSide.TOP, Rotation.NO_ROTATION)
+    socket_mesh = placer.place(socket_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
 
     final_mesh = concatenate_meshes(board_mesh, socket_mesh)
 
@@ -42,6 +44,7 @@ def create_my() -> trimesh.Trimesh:
     blue_led_builder = create_led_builder(LED_COLOR_BLUE)
     orange_led_builder = create_led_builder(LED_COLOR_ORANGE)
     chip_builder = create_chip_builder(x_count=7, y_count=2)
+    socket_builder = create_socket_builder(4.5, 2, pin_positions=[(2, 1, math.pi/2), (1, 2, 0.0)], color=np.array([50, 50, 50, 255]))
 
     meshes = []
     meshes.append(placer.place(board_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION))
@@ -55,6 +58,9 @@ def create_my() -> trimesh.Trimesh:
     meshes.append(placer.place(orange_led_builder, (2, 8), PositionSide.TOP, Rotation.ROTATE_180))
     meshes.append(placer.place(blue_led_builder, (13, 5), PositionSide.TOP, Rotation.ROTATE_COUNTER_CLOCKWISE_90))
     meshes.append(placer.place(chip_builder, (7, 1), PositionSide.TOP, Rotation.ROTATE_COUNTER_CLOCKWISE_90))
+    meshes.append(placer.place(socket_builder, (-2, 0), PositionSide.TOP, Rotation.ROTATE_180))
+    meshes.append(placer.place(socket_builder, (-2, 6), PositionSide.TOP, Rotation.ROTATE_180))
+    meshes.append(placer.place(socket_builder, (11, 3), PositionSide.TOP, Rotation.NO_ROTATION))
 
     final_mesh = concatenate_meshes(*meshes)
 
@@ -65,7 +71,7 @@ def create_my() -> trimesh.Trimesh:
 if __name__ == '__main__':
     file_name = 'test'
 
-    # final_mesh = create_test()
+    final_mesh = create_test()
     final_mesh = create_my()
 
     print('is_watertight =', final_mesh.is_watertight)
