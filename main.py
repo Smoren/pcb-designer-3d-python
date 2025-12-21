@@ -12,6 +12,7 @@ from lib.constants import BOARD_GRID_STEP, LED_COLOR_BLUE, LED_COLOR_ORANGE
 from lib.factories.led import create_led_builder
 from lib.factories.resistor import create_resistor_builder
 from lib.factories.socket import create_socket_builder
+from lib.factories.track import create_track_builder
 
 
 def create_test() -> trimesh.Trimesh:
@@ -21,12 +22,14 @@ def create_test() -> trimesh.Trimesh:
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
     board_builder = create_board_builder(7, 5, x_indent=1.2, y_indent=1.2)
-    chip_builder = create_chip_builder(x_count=7, y_count=2, text="TEST")
+    track_builder_1x1 = create_track_builder(1, 1)
+    track_builder_2x1 = create_track_builder(2, 1)
 
     board_mesh = placer.place(board_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
-    chip_mesh = placer.place(chip_builder, (7, 1), PositionSide.TOP, Rotation.ROTATE_COUNTER_CLOCKWISE_90)
+    track_mesh1 = placer.place(track_builder_1x1, (0, 0), PositionSide.BOTTOM, Rotation.NO_ROTATION)
+    track_mesh2 = placer.place(track_builder_2x1, (2, 0), PositionSide.BOTTOM, Rotation.NO_ROTATION)
 
-    final_mesh = concatenate_meshes(board_mesh, chip_mesh)
+    final_mesh = concatenate_meshes(board_mesh, track_mesh1, track_mesh2)
 
     # fix_all(final_mesh)
     return final_mesh
@@ -45,6 +48,11 @@ def create_my() -> trimesh.Trimesh:
     orange_led_builder = create_led_builder(LED_COLOR_ORANGE)
     chip_builder = create_chip_builder(x_count=7, y_count=2, text="74HC32")
     socket_builder = create_socket_builder(4.5, 2, pin_positions=[(2, 1, math.pi/2), (1, 2, 0.0)], color=np.array([50, 50, 50, 255]))
+    track_builder_1x9 = create_track_builder(1, 9)
+    track_builder_2x2 = create_track_builder(2, 2)
+    track_builder_1x1 = create_track_builder(1, 1)
+    track_builder_2x1 = create_track_builder(2, 1)
+    track_builder_1x3 = create_track_builder(1, 3)
 
     meshes = []
     meshes.append(placer.place(board_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION))
@@ -61,6 +69,18 @@ def create_my() -> trimesh.Trimesh:
     meshes.append(placer.place(socket_builder, (-2, 0), PositionSide.TOP, Rotation.ROTATE_180))
     meshes.append(placer.place(socket_builder, (-2, 6), PositionSide.TOP, Rotation.ROTATE_180))
     meshes.append(placer.place(socket_builder, (11, 3), PositionSide.TOP, Rotation.NO_ROTATION))
+    meshes.append(placer.place(track_builder_1x9, (2, 0), PositionSide.BOTTOM, Rotation.NO_ROTATION))
+    meshes.append(placer.place(track_builder_2x2, (0, 0), PositionSide.BOTTOM, Rotation.ROTATE_CLOCKWISE_90))
+    meshes.append(placer.place(track_builder_2x2, (0, 6), PositionSide.BOTTOM, Rotation.ROTATE_CLOCKWISE_90))
+    meshes.append(placer.place(track_builder_2x1, (12, 5), PositionSide.BOTTOM, Rotation.NO_ROTATION))
+    meshes.append(placer.place(track_builder_2x1, (13, 4), PositionSide.BOTTOM, Rotation.ROTATE_CLOCKWISE_90))
+    meshes.append(placer.place(track_builder_1x3, (13, 6), PositionSide.BOTTOM, Rotation.NO_ROTATION))
+    meshes.append(placer.place(track_builder_1x1, (3, 0), PositionSide.BOTTOM, Rotation.NO_ROTATION))
+    meshes.append(placer.place(track_builder_1x1, (3, 8), PositionSide.BOTTOM, Rotation.NO_ROTATION))
+    meshes.append(placer.place(track_builder_2x1, (6, 5), PositionSide.BOTTOM, Rotation.NO_ROTATION))
+    meshes.append(placer.place(track_builder_2x1, (6, 6), PositionSide.BOTTOM, Rotation.NO_ROTATION))
+    meshes.append(placer.place(track_builder_2x1, (6, 7), PositionSide.BOTTOM, Rotation.NO_ROTATION))
+    meshes.append(placer.place(track_builder_2x1, (7, 7), PositionSide.BOTTOM, Rotation.ROTATE_CLOCKWISE_90))
 
     final_mesh = concatenate_meshes(*meshes)
 
