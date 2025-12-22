@@ -14,6 +14,7 @@ from lib.factories.led import create_led_builder
 from lib.factories.resistor import create_resistor_builder
 from lib.factories.socket import create_socket_builder
 from lib.factories.track import create_track_builder
+from lib.factories.wire import create_wire_builder
 
 
 def create_test() -> trimesh.Trimesh:
@@ -23,12 +24,12 @@ def create_test() -> trimesh.Trimesh:
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
     board_builder = create_board_builder(7, 5, x_indent=1.2, y_indent=1.2)
-    jumper_builder = create_jumper_builder(5, 2, offset_z=1)
+    wire_builder = create_wire_builder(15, COLOR_RED)
 
     board_mesh = placer.place(board_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
-    jumper_mesh = placer.place(jumper_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
+    wire_mesh = placer.place(wire_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION)
 
-    final_mesh = concatenate_meshes(board_mesh, jumper_mesh)
+    final_mesh = concatenate_meshes(board_mesh, wire_mesh)
 
     # fix_all(final_mesh)
     return final_mesh
