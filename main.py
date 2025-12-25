@@ -16,6 +16,7 @@ if __name__ == '__main__':
     middle_box_mesh = create_middle_box_mesh()
 
     final_mesh = concatenate_meshes(final_mesh, middle_box_mesh)
+    # final_mesh = middle_box_mesh
 
     print('is_watertight =', final_mesh.is_watertight)
     print('is_volume =', final_mesh.is_volume)
