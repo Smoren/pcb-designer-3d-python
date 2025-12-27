@@ -12,14 +12,12 @@ class Board:
 
 
 class Pin:
-    outer_radius: float
-    inner_radius: float
+    radius: float
     x: int
     y: int
 
-    def __init__(self, outer_radius: float, inner_radius: float, x: int, y: int):
-        self.outer_radius = outer_radius
-        self.inner_radius = inner_radius
+    def __init__(self, radius: float, x: int, y: int):
+        self.radius = radius
         self.x = x
         self.y = y
 

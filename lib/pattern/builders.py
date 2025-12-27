@@ -48,7 +48,12 @@ class BoardImageBuilder:
         right = self._mm_to_pixels(board.x_indent + (board.x_count - 1) * self._step)
         bottom = self._mm_to_pixels(board.y_indent + (board.y_count - 1) * self._step)
 
-        draw.rectangle([left, top, right, bottom], outline='black', width=1)
+        left_outer = 0
+        top_outer = 0
+        right_outer = right + self._mm_to_pixels(board.x_indent)
+        bottom_outer = bottom + self._mm_to_pixels(board.y_indent)
+
+        draw.rectangle([left_outer, top_outer, right_outer, bottom_outer], outline='gray', width=2)
 
         for x in range(board.x_count):
             x_pos_mm = board.x_indent + x * self._step
@@ -69,25 +74,15 @@ class BoardImageBuilder:
         center_x = self._mm_to_pixels(center_x_mm)
         center_y = self._mm_to_pixels(center_y_mm)
 
-        outer_radius_px = self._mm_to_pixels(pin.outer_radius)
-        inner_radius_px = self._mm_to_pixels(pin.inner_radius) if pin.inner_radius > 0 else 0
+        radius_px = self._mm_to_pixels(pin.radius)
 
         outer_bbox = [
-            center_x - outer_radius_px,
-            center_y - outer_radius_px,
-            center_x + outer_radius_px,
-            center_y + outer_radius_px
+            center_x - radius_px,
+            center_y - radius_px,
+            center_x + radius_px,
+            center_y + radius_px
         ]
         draw.ellipse(outer_bbox, fill='black')
-
-        if inner_radius_px > 0:
-            inner_bbox = [
-                center_x - inner_radius_px,
-                center_y - inner_radius_px,
-                center_x + inner_radius_px,
-                center_y + inner_radius_px
-            ]
-            draw.ellipse(inner_bbox, fill='white')
 
         return draw
 
@@ -106,7 +101,7 @@ class BoardImageBuilder:
         width_px = max(1, self._mm_to_pixels(track.width))
         draw.line([(start_x, start_y), (end_x, end_y)], fill='black', width=width_px)
 
-        radius_px = max(1, width_px)
+        radius_px = max(1, int(width_px/2))
         draw.ellipse([
             start_x-radius_px, start_y-radius_px,
             start_x+radius_px, start_y+radius_px
