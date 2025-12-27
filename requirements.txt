@@ -3,3 +3,4 @@ trimeshtools
 numpy
 shapely
 pyvista
+pillow
