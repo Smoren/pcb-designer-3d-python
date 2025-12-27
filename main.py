@@ -6,7 +6,8 @@ from app.box import create_middle_box_mesh
 from app.elements import create_or_mesh
 from app.test import create_test
 
-if __name__ == '__main__':
+
+def run_build_mesh():
     file_name = 'test'
 
     # final_mesh = create_test()
@@ -25,3 +26,12 @@ if __name__ == '__main__':
     print(f'Saved: output/{file_name}.obj')
 
     show_mesh(final_mesh, with_axis=False)
+
+
+def run_build_pattern():
+    pass
+
+
+if __name__ == '__main__':
+    # run_build_mesh()
+    run_build_pattern()
