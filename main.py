@@ -7,7 +7,7 @@ from app.elements import create_or_mesh
 from app.test import create_test
 from lib.constants import BOARD_PAD_RADIUS, BOARD_CONTACT_PAD_RADIUS, TRACK_WIDTH, BOARD_GRID_STEP
 from lib.pattern.builders import BoardImageBuilder
-from lib.pattern.structs import Board, Pin, Track
+from lib.pattern.structs import Board, Pin, Track, MultiTrack
 
 
 def run_build_mesh():
@@ -33,17 +33,102 @@ def run_build_mesh():
 
 def run_build_pattern():
     board = Board(x_count=9, y_count=14, x_indent=1.2, y_indent=1.2)
+    pin_radius = BOARD_CONTACT_PAD_RADIUS
+    track_width = TRACK_WIDTH/1.6
 
     pins = [
-        # Pin(radius=BOARD_CONTACT_PAD_RADIUS, x=2, y=3),
-        # Pin(outer_radius=BOARD_CONTACT_PAD_RADIUS, x=5, y=5),
-        # Pin(outer_radius=BOARD_CONTACT_PAD_RADIUS, x=8, y=2)
+        Pin(radius=pin_radius, x=1, y=0),
+        Pin(radius=pin_radius, x=7, y=0),
+        Pin(radius=pin_radius, x=2, y=1),
+        Pin(radius=pin_radius, x=8, y=1),
+        Pin(radius=pin_radius, x=0, y=2),
+        Pin(radius=pin_radius, x=1, y=2),
+        Pin(radius=pin_radius, x=2, y=2),
+        Pin(radius=pin_radius, x=3, y=2),
+        Pin(radius=pin_radius, x=6, y=2),
+        Pin(radius=pin_radius, x=8, y=2),
+        Pin(radius=pin_radius, x=0, y=3),
+        Pin(radius=pin_radius, x=4, y=3),
+        Pin(radius=pin_radius, x=8, y=3),
+        Pin(radius=pin_radius, x=1, y=6),
+        Pin(radius=pin_radius, x=2, y=6),
+        Pin(radius=pin_radius, x=3, y=6),
+        Pin(radius=pin_radius, x=0, y=7),
+        Pin(radius=pin_radius, x=1, y=7),
+        Pin(radius=pin_radius, x=2, y=7),
+        Pin(radius=pin_radius, x=3, y=7),
+        Pin(radius=pin_radius, x=4, y=7),
+        Pin(radius=pin_radius, x=5, y=7),
+        Pin(radius=pin_radius, x=6, y=7),
+        Pin(radius=pin_radius, x=7, y=7),
+        Pin(radius=pin_radius, x=1, y=10),
+        Pin(radius=pin_radius, x=2, y=10),
+        Pin(radius=pin_radius, x=3, y=10),
+        Pin(radius=pin_radius, x=4, y=10),
+        Pin(radius=pin_radius, x=5, y=10),
+        Pin(radius=pin_radius, x=6, y=10),
+        Pin(radius=pin_radius, x=7, y=10),
+        Pin(radius=pin_radius, x=4, y=11),
+        Pin(radius=pin_radius, x=5, y=11),
+        Pin(radius=pin_radius, x=3, y=12),
+        Pin(radius=pin_radius, x=4, y=13),
+        Pin(radius=pin_radius, x=5, y=13),
+        Pin(radius=pin_radius, x=6, y=13),
+        Pin(radius=pin_radius, x=8, y=13),
     ]
 
+    multi_track1 = MultiTrack(x_start=1, y_start=0, width=track_width) \
+        .move(x_offset=1, y_offset=1) \
+        .move(x_offset=2, y_offset=0) \
+        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=-3, y_offset=3) \
+        .move(x_offset=0, y_offset=2) \
+        .move(x_offset=-1, y_offset=0)
+
+    multi_track2 = MultiTrack(x_start=7, y_start=0, width=track_width) \
+        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=1, y_offset=0) \
+        .move(x_offset=-2, y_offset=0) \
+        .move(x_offset=-4, y_offset=4) \
+        .move(x_offset=0, y_offset=2) \
+
+    multi_track3 = MultiTrack(x_start=0, y_start=2, width=track_width) \
+        .move(x_offset=3, y_offset=0)
+
+    multi_track4 = MultiTrack(x_start=6, y_start=2, width=track_width) \
+        .move(x_offset=2, y_offset=0) \
+        .move(x_offset=-1, y_offset=0) \
+        .move(x_offset=0, y_offset=6) \
+        .move(x_offset=1, y_offset=1) \
+        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=-1, y_offset=1) \
+        .move(x_offset=-2, y_offset=0)
+
+    multi_track5 = MultiTrack(x_start=3, y_start=6, width=track_width) \
+        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=-1, y_offset=1) \
+        .move(x_offset=-2, y_offset=0) \
+        .move(x_offset=0, y_offset=3) \
+        .move(x_offset=1, y_offset=1) \
+        .move(x_offset=2, y_offset=0) \
+        .move(x_offset=1, y_offset=1) \
+        .move(x_offset=1, y_offset=0)
+
+    multi_track6 = MultiTrack(x_start=1, y_start=10, width=track_width) \
+        .move(x_offset=1, y_offset=1) \
+        .move(x_offset=2, y_offset=0)
+
+    multi_track7 = MultiTrack(x_start=6, y_start=13, width=track_width) \
+        .move(x_offset=2, y_offset=0)
+
     tracks = [
-        Track(x=1, y=3, x_count=3, y_count=0, width=TRACK_WIDTH),
-        # Track(x=4, y=3, x_count=0, y_count=2, width=TRACK_WIDTH),
-        # Track(x=3, y=4, x_count=2, y_count=2, width=TRACK_WIDTH)
+        *multi_track1.tracks,
+        *multi_track2.tracks,
+        *multi_track3.tracks,
+        *multi_track4.tracks,
+        *multi_track5.tracks,
+        *multi_track6.tracks,
+        *multi_track7.tracks,
     ]
 
     builder = BoardImageBuilder(step=BOARD_GRID_STEP, board=board, pins=pins, tracks=tracks, dpi=300)

@@ -23,8 +23,8 @@ class BoardImageBuilder:
         return int(mm * self._dpi / 25.4)
 
     def build(self):
-        width_mm = (self._board.x_indent * 2 + (self._board.x_count - 1) * self._step)
-        height_mm = (self._board.y_indent * 2 + (self._board.y_count - 1) * self._step)
+        width_mm = self._board.x_indent*2 + self._board.x_count*self._step
+        height_mm = self._board.y_indent*2 + self._board.y_count*self._step
 
         width_px = self._mm_to_pixels(width_mm)
         height_px = self._mm_to_pixels(height_mm)
@@ -45,8 +45,8 @@ class BoardImageBuilder:
     def _place_board(self, board: Board, draw: ImageDraw.ImageDraw) -> ImageDraw.ImageDraw:
         left = self._mm_to_pixels(board.x_indent)
         top = self._mm_to_pixels(board.y_indent)
-        right = self._mm_to_pixels(board.x_indent + (board.x_count - 1) * self._step)
-        bottom = self._mm_to_pixels(board.y_indent + (board.y_count - 1) * self._step)
+        right = self._mm_to_pixels(board.x_indent + board.x_count*self._step)
+        bottom = self._mm_to_pixels(board.y_indent + board.y_count*self._step)
 
         left_outer = 0
         top_outer = 0
@@ -55,21 +55,21 @@ class BoardImageBuilder:
 
         draw.rectangle([left_outer, top_outer, right_outer, bottom_outer], outline='gray', width=2)
 
-        for x in range(board.x_count):
-            x_pos_mm = board.x_indent + x * self._step
+        for x in range(board.x_count+1):
+            x_pos_mm = board.x_indent + x*self._step
             x_pos = self._mm_to_pixels(x_pos_mm)
             draw.line([(x_pos, top), (x_pos, bottom)], fill='lightgray', width=1)
 
-        for y in range(board.y_count):
-            y_pos_mm = board.y_indent + y * self._step
+        for y in range(board.y_count+1):
+            y_pos_mm = board.y_indent + y*self._step
             y_pos = self._mm_to_pixels(y_pos_mm)
             draw.line([(left, y_pos), (right, y_pos)], fill='lightgray', width=1)
 
         return draw
 
     def _place_pin(self, pin: Pin, draw: ImageDraw.ImageDraw) -> ImageDraw.ImageDraw:
-        center_x_mm = self._board.x_indent + pin.x * self._step
-        center_y_mm = self._board.y_indent + pin.y * self._step
+        center_x_mm = self._board.x_indent + pin.x*self._step + self._step/2
+        center_y_mm = self._board.y_indent + pin.y*self._step + self._step/2
 
         center_x = self._mm_to_pixels(center_x_mm)
         center_y = self._mm_to_pixels(center_y_mm)
@@ -87,11 +87,11 @@ class BoardImageBuilder:
         return draw
 
     def _place_track(self, track: Track, draw: ImageDraw.ImageDraw) -> ImageDraw.ImageDraw:
-        start_x_mm = self._board.x_indent + track.x * self._step
-        start_y_mm = self._board.y_indent + track.y * self._step
+        start_x_mm = self._board.x_indent + track.x*self._step + self._step/2
+        start_y_mm = self._board.y_indent + track.y*self._step + self._step/2
 
-        end_x_mm = self._board.x_indent + (track.x + track.x_count) * self._step
-        end_y_mm = self._board.y_indent + (track.y + track.y_count) * self._step
+        end_x_mm = self._board.x_indent + (track.x + track.x_count)*self._step + self._step/2
+        end_y_mm = self._board.y_indent + (track.y + track.y_count)*self._step + self._step/2
 
         start_x = self._mm_to_pixels(start_x_mm)
         start_y = self._mm_to_pixels(start_y_mm)

@@ -1,3 +1,6 @@
+from typing import List
+
+
 class Board:
     x_count: int
     y_count: int
@@ -12,14 +15,14 @@ class Board:
 
 
 class Pin:
-    radius: float
     x: int
     y: int
+    radius: float
 
-    def __init__(self, radius: float, x: int, y: int):
-        self.radius = radius
+    def __init__(self, x: int, y: int, radius: float):
         self.x = x
         self.y = y
+        self.radius = radius
 
 
 class Track:
@@ -35,3 +38,34 @@ class Track:
         self.x_count = x_count
         self.y_count = y_count
         self.width = width
+
+
+class MultiTrack:
+    _x_start: int
+    _y_start: int
+    _width: float
+    _tracks: List[Track]
+
+    def __init__(self, x_start: int, y_start: int, width: float):
+        self._x_start = x_start
+        self._y_start = y_start
+        self._width = width
+        self._tracks = []
+
+    def move(self, x_offset: int, y_offset: int) -> "MultiTrack":
+        self._tracks.append(Track(
+            x=self._x_start,
+            y=self._y_start,
+            x_count=x_offset,
+            y_count=y_offset,
+            width=self._width,
+        ))
+
+        self._x_start += x_offset
+        self._y_start += y_offset
+
+        return self
+
+    @property
+    def tracks(self) -> List[Track]:
+        return list(self._tracks)
