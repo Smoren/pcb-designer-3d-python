@@ -34,7 +34,7 @@ def run_build_mesh():
 def run_build_pattern():
     board = Board(x_count=9, y_count=14, x_indent=1.2, y_indent=1.2)
     pin_radius = BOARD_CONTACT_PAD_RADIUS
-    track_width = TRACK_WIDTH/1.6
+    track_width = TRACK_WIDTH/1.5
 
     pins = [
         Pin(radius=pin_radius, x=1, y=0),
