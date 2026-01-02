@@ -6,7 +6,7 @@ from app.box import create_middle_box_mesh
 from app.elements import create_or_mesh
 from app.test import create_test
 from lib.constants import BOARD_PAD_RADIUS, BOARD_CONTACT_PAD_RADIUS, TRACK_WIDTH, BOARD_GRID_STEP
-from lib.pattern.builders import BoardImageBuilder
+from lib.pattern.builders import BoardImageBuilder, BoardMeshBuilder
 from lib.pattern.structs import Board, Pin, Track, MultiTrack
 
 
@@ -32,9 +32,11 @@ def run_build_mesh():
 
 
 def run_build_pattern():
+    file_name = 'pattern'
+
     board = Board(x_count=9, y_count=14, x_indent=1.2, y_indent=1.2)
     pin_radius = BOARD_CONTACT_PAD_RADIUS
-    track_width = TRACK_WIDTH/1.5
+    track_width = TRACK_WIDTH/1.75
 
     pins = [
         Pin(radius=pin_radius, x=1, y=0),
@@ -131,12 +133,22 @@ def run_build_pattern():
         *multi_track7.tracks,
     ]
 
-    builder = BoardImageBuilder(step=BOARD_GRID_STEP, board=board, pins=pins, tracks=tracks, dpi=300)
-    image = builder.build()
+    mesh_builder = BoardMeshBuilder(step=BOARD_GRID_STEP, board=board, pins=pins, tracks=tracks, thickness=0.5)
+    final_mesh = mesh_builder.build()
 
-    # Сохраняем изображение
-    image.save("output/pattern.png", dpi=(300, 300))
-    image.show()
+    print('is_watertight =', final_mesh.is_watertight)
+    print('is_volume =', final_mesh.is_volume)
+
+    final_mesh.export(f'output/{file_name}.stl')
+    print(f'Saved: output/{file_name}.stl')
+
+    show_mesh(final_mesh, with_axis=True)
+
+    # img_builder = BoardImageBuilder(step=BOARD_GRID_STEP, board=board, pins=pins, tracks=tracks, dpi=300)
+    # image = img_builder.build()
+
+    # image.save("output/pattern.png", dpi=(300, 300))
+    # image.show()
 
 
 if __name__ == '__main__':
