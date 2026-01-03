@@ -1,19 +1,6 @@
 from typing import List
 
 
-class Board:
-    x_count: int
-    y_count: int
-    x_indent: float
-    y_indent: float
-
-    def __init__(self, x_count: int, y_count: int, x_indent: float, y_indent: float):
-        self.x_count = x_count
-        self.y_count = y_count
-        self.x_indent = x_indent
-        self.y_indent = y_indent
-
-
 class Pin:
     x: int
     y: int
@@ -69,3 +56,22 @@ class MultiTrack:
     @property
     def tracks(self) -> List[Track]:
         return list(self._tracks)
+
+
+class BoardPattern:
+    x_count: int
+    y_count: int
+    x_indent: float
+    y_indent: float
+
+    pins: List[Pin]
+    tracks: List[Track]
+
+    def __init__(self, x_count: int, y_count: int, x_indent: float, y_indent: float, pins: List[Pin], tracks: List[Track]):
+        self.x_count = x_count
+        self.y_count = y_count
+        self.x_indent = x_indent
+        self.y_indent = y_indent
+
+        self.pins = pins
+        self.tracks = tracks
