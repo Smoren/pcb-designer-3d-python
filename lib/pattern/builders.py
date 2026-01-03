@@ -219,3 +219,97 @@ class BoardPatternMeshBuilder:
         final_mesh = final_mesh.difference(cylinder_mesh)
 
         return final_mesh
+
+
+class ReliefBoardPatternMeshBuilder:
+    _step: float  # в мм
+    _board_pattern: BoardPattern
+    _pins: List[Pin]
+    _tracks: List[Track]
+    _base_thickness: float
+    _relief_thickness: float
+
+    def __init__(self, step: float, board_pattern: BoardPattern, base_thickness: float = 1.0, relief_thickness: float = 1.0):
+        self._step = step
+        self._board_pattern = board_pattern
+        self._pins = board_pattern.pins
+        self._tracks = board_pattern.tracks
+        self._base_thickness = base_thickness
+        self._relief_thickness = relief_thickness
+
+    def build(self) -> trimesh.Trimesh:
+        final_mesh = self._place_board(self._board_pattern)
+
+        for track in self._tracks:
+            final_mesh = self._place_track(track, final_mesh)
+
+        for pin in self._pins:
+            final_mesh = self._place_pin(pin, final_mesh)
+
+        return final_mesh
+
+    def _place_board(self, board: BoardPattern) -> trimesh.Trimesh:
+        width = board.x_indent*2 + board.x_count*self._step
+        height = board.y_indent*2 + board.y_count*self._step
+
+        final_mesh = trimesh.creation.box([width, height, self._base_thickness])
+        move_to_bound(final_mesh, 1, 1, 1)
+        final_mesh.apply_translation([-board.x_indent, -board.y_indent, 0])
+
+        return final_mesh
+
+    def _place_pin(self, pin: Pin, final_mesh: trimesh.Trimesh) -> trimesh.Trimesh:
+        center_x = pin.x*self._step + self._step/2
+        center_y = pin.y*self._step + self._step/2
+
+        pin = trimesh.creation.cylinder(radius=pin.radius, height=self._base_thickness + self._relief_thickness, sections=CYLINDER_SECTIONS)
+        move_to_bound(pin, z=1)
+        pin.apply_translation([center_x, center_y, 0])
+
+        final_mesh = final_mesh.union(pin)
+        return final_mesh
+
+
+    def _place_track(self, track: Track, final_mesh: trimesh.Trimesh) -> trimesh.Trimesh:
+        start_x = track.x*self._step + self._step/2
+        start_y = track.y*self._step + self._step/2
+
+        end_x = (track.x + track.x_count)*self._step + self._step/2
+        end_y = (track.y + track.y_count)*self._step + self._step/2
+
+        # Create a line segment for the track path
+        track_line = trimesh.load_path([
+            [start_x, start_y, 0],
+            [end_x, end_y, 0]
+        ])
+
+        # Create a rectangle polygon for the track cross-section
+        width = track.width
+        half_width = width / 2
+
+        # Define rectangle vertices (square with width = track.width)
+        polygon = shapely.geometry.Polygon([
+            [-half_width, 0],
+            [half_width, 0],
+            [half_width, self._base_thickness + self._relief_thickness],
+            [-half_width, self._base_thickness + self._relief_thickness],
+        ])
+
+        # Sweep the rectangle along the line to create a 3D track
+        track_mesh = trimesh.creation.sweep_polygon(
+            polygon=polygon,
+            path=track_line.vertices
+        )
+
+        move_to_bound(track_mesh, z=1)
+
+        # Subtract the track from the board
+        final_mesh = final_mesh.union(track_mesh)
+
+        cylinder_mesh = trimesh.creation.cylinder(radius=track.width/2, height=self._base_thickness + self._relief_thickness, sections=CYLINDER_SECTIONS)
+        move_to_bound(cylinder_mesh, z=1)
+        cylinder_mesh.apply_translation([start_x, start_y, 0])
+
+        final_mesh = final_mesh.union(cylinder_mesh)
+
+        return final_mesh

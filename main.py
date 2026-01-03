@@ -6,7 +6,7 @@ from app.box import create_middle_box_mesh
 from app.elements import create_or_mesh, create_or_board_pattern
 from app.test import create_test
 from lib.constants import BOARD_PAD_RADIUS, BOARD_CONTACT_PAD_RADIUS, TRACK_WIDTH, BOARD_GRID_STEP
-from lib.pattern.builders import BoardPatternImageBuilder, BoardPatternMeshBuilder
+from lib.pattern.builders import BoardPatternImageBuilder, BoardPatternMeshBuilder, ReliefBoardPatternMeshBuilder
 from lib.pattern.structs import BoardPattern, Pin, Track, MultiTrack
 
 
@@ -36,7 +36,8 @@ def run_build_pattern():
 
     board_pattern = create_or_board_pattern()
 
-    mesh_builder = BoardPatternMeshBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, thickness=0.5)
+    # mesh_builder = BoardPatternMeshBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, thickness=0.5)
+    mesh_builder = ReliefBoardPatternMeshBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, base_thickness=2, relief_thickness=2)
     final_mesh = mesh_builder.build()
 
     print('is_watertight =', final_mesh.is_watertight)
