@@ -16,14 +16,16 @@ class BoardPatternImageBuilder:
     _tracks: List[Track]
     _dpi: int
     _antialias_factor: int  # Коэффициент антиалиасинга
+    _draw_grid: bool
 
-    def __init__(self, step: float, board_pattern: BoardPattern, dpi: int = 300, antialias_factor: int = 4):
+    def __init__(self, step: float, board_pattern: BoardPattern, dpi: int = 300, antialias_factor: int = 4, draw_grid: bool = True):
         self._step = step
         self._board_pattern = board_pattern
         self._pins = board_pattern.pins
         self._tracks = board_pattern.tracks
         self._dpi = dpi
         self._antialias_factor = antialias_factor
+        self._draw_grid = draw_grid
 
     def _mm_to_pixels(self, mm: float) -> int:
         # 1 inch = 25.4 mm
@@ -72,15 +74,16 @@ class BoardPatternImageBuilder:
 
         draw.rectangle([left_outer, top_outer, right_outer, bottom_outer], outline='gray', width=2 * self._antialias_factor)
 
-        for x in range(board.x_count + 1):
-            x_pos_mm = board.x_indent + x * self._step
-            x_pos = self._mm_to_scaled_pixels(x_pos_mm)
-            draw.line([(x_pos, top), (x_pos, bottom)], fill='lightgray', width=1 * self._antialias_factor)
+        if self._draw_grid:
+            for x in range(board.x_count + 1):
+                x_pos_mm = board.x_indent + x * self._step
+                x_pos = self._mm_to_scaled_pixels(x_pos_mm)
+                draw.line([(x_pos, top), (x_pos, bottom)], fill='lightgray', width=1 * self._antialias_factor)
 
-        for y in range(board.y_count + 1):
-            y_pos_mm = board.y_indent + y * self._step
-            y_pos = self._mm_to_scaled_pixels(y_pos_mm)
-            draw.line([(left, y_pos), (right, y_pos)], fill='lightgray', width=1 * self._antialias_factor)
+            for y in range(board.y_count + 1):
+                y_pos_mm = board.y_indent + y * self._step
+                y_pos = self._mm_to_scaled_pixels(y_pos_mm)
+                draw.line([(left, y_pos), (right, y_pos)], fill='lightgray', width=1 * self._antialias_factor)
 
         return draw
 

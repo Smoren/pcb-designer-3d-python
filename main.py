@@ -48,7 +48,7 @@ def run_build_pattern():
 
     show_mesh(final_mesh, with_axis=True)
 
-    img_builder = BoardPatternImageBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, dpi=300)
+    img_builder = BoardPatternImageBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, dpi=300, draw_grid=False)
     image = img_builder.build()
 
     image.save("output/pattern.png", dpi=(300, 300))
