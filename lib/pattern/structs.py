@@ -1,15 +1,17 @@
-from typing import List
+from typing import List, Optional
 
 
 class Pin:
     x: int
     y: int
-    radius: float
+    outer_radius: float
+    inner_radius: Optional[float]
 
-    def __init__(self, x: int, y: int, radius: float):
+    def __init__(self, x: int, y: int, outer_radius: float, inner_radius: Optional[float] = None):
         self.x = x
         self.y = y
-        self.radius = radius
+        self.outer_radius = outer_radius
+        self.inner_radius = inner_radius
 
 
 class Track:

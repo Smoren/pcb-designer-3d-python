@@ -9,7 +9,7 @@ from lib.base import GridPlacer, PositionSide, Rotation, CachedBuilderManager
 from lib.factories.board import create_board_builder
 from lib.factories.chip import create_chip_builder
 from lib.constants import BOARD_GRID_STEP, COLOR_BLUE, COLOR_ORANGE, COLOR_BLACK, BOARD_CONTACT_PAD_RADIUS, \
-    TRACK_WIDTH
+    TRACK_WIDTH, BOARD_PAD_RADIUS
 from lib.factories.jumper import create_jumper_builder
 from lib.factories.led import create_led_builder
 from lib.factories.resistor import create_resistor_builder
@@ -96,48 +96,49 @@ def create_or_mesh() -> trimesh.Trimesh:
 
 
 def create_or_board_pattern() -> BoardPattern:
-    pin_radius = BOARD_CONTACT_PAD_RADIUS
-    track_width = TRACK_WIDTH / 1.5
+    pin_outer_radius = BOARD_CONTACT_PAD_RADIUS
+    pin_inner_radius = BOARD_PAD_RADIUS
+    track_width = TRACK_WIDTH / 2.5
 
     pins = [
-        Pin(radius=pin_radius, x=1, y=0),
-        Pin(radius=pin_radius, x=7, y=0),
-        Pin(radius=pin_radius, x=2, y=1),
-        Pin(radius=pin_radius, x=8, y=1),
-        Pin(radius=pin_radius, x=0, y=2),
-        Pin(radius=pin_radius, x=1, y=2),
-        Pin(radius=pin_radius, x=2, y=2),
-        Pin(radius=pin_radius, x=3, y=2),
-        Pin(radius=pin_radius, x=6, y=2),
-        Pin(radius=pin_radius, x=8, y=2),
-        Pin(radius=pin_radius, x=0, y=3),
-        Pin(radius=pin_radius, x=4, y=3),
-        Pin(radius=pin_radius, x=8, y=3),
-        Pin(radius=pin_radius, x=1, y=6),
-        Pin(radius=pin_radius, x=2, y=6),
-        Pin(radius=pin_radius, x=3, y=6),
-        Pin(radius=pin_radius, x=0, y=7),
-        Pin(radius=pin_radius, x=1, y=7),
-        Pin(radius=pin_radius, x=2, y=7),
-        Pin(radius=pin_radius, x=3, y=7),
-        Pin(radius=pin_radius, x=4, y=7),
-        Pin(radius=pin_radius, x=5, y=7),
-        Pin(radius=pin_radius, x=6, y=7),
-        Pin(radius=pin_radius, x=7, y=7),
-        Pin(radius=pin_radius, x=1, y=10),
-        Pin(radius=pin_radius, x=2, y=10),
-        Pin(radius=pin_radius, x=3, y=10),
-        Pin(radius=pin_radius, x=4, y=10),
-        Pin(radius=pin_radius, x=5, y=10),
-        Pin(radius=pin_radius, x=6, y=10),
-        Pin(radius=pin_radius, x=7, y=10),
-        Pin(radius=pin_radius, x=4, y=11),
-        Pin(radius=pin_radius, x=5, y=11),
-        Pin(radius=pin_radius, x=3, y=12),
-        Pin(radius=pin_radius, x=4, y=13),
-        Pin(radius=pin_radius, x=5, y=13),
-        Pin(radius=pin_radius, x=6, y=13),
-        Pin(radius=pin_radius, x=8, y=13),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=0),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=7, y=0),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=1),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=1),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=2),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=2),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=2),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=2),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=2),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=2),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=3),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=3),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=3),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=6),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=6),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=6),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=7),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=7),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=7),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=7),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=7),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=7),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=7),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=7, y=7),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=10),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=10),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=10),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=10),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=10),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=10),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=7, y=10),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=11),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=11),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=12),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=13),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=13),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=13),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=13),
     ]
 
     multi_track1 = MultiTrack(x_start=1, y_start=0, width=track_width) \

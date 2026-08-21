@@ -94,16 +94,25 @@ class BoardPatternImageBuilder:
         center_x = self._mm_to_scaled_pixels(center_x_mm)
         center_y = self._mm_to_scaled_pixels(center_y_mm)
 
-        radius_px = self._mm_to_scaled_pixels(pin.radius)
+        outer_radius_px = self._mm_to_scaled_pixels(pin.outer_radius)
+        inner_radius_px = self._mm_to_scaled_pixels(pin.inner_radius)
 
         outer_bbox = [
-            center_x - radius_px,
-            center_y - radius_px,
-            center_x + radius_px,
-            center_y + radius_px
+            center_x - outer_radius_px,
+            center_y - outer_radius_px,
+            center_x + outer_radius_px,
+            center_y + outer_radius_px
+        ]
+
+        inner_bbox = [
+            center_x - inner_radius_px,
+            center_y - inner_radius_px,
+            center_x + inner_radius_px,
+            center_y + inner_radius_px
         ]
 
         draw.ellipse(outer_bbox, fill='black')
+        draw.ellipse(inner_bbox, fill='white')
 
         return draw
 
@@ -177,7 +186,7 @@ class BoardPatternMeshBuilder:
         center_x = pin.x*self._step + self._step/2
         center_y = pin.y*self._step + self._step/2
 
-        pin = trimesh.creation.cylinder(radius=pin.radius, height=self._thickness*2, sections=CYLINDER_SECTIONS)
+        pin = trimesh.creation.cylinder(radius=pin.outer_radius, height=self._thickness * 2, sections=CYLINDER_SECTIONS)
         pin.apply_translation([center_x, center_y, 0])
 
         final_mesh = final_mesh.difference(pin)
@@ -265,7 +274,7 @@ class ReliefBoardPatternMeshBuilder:
         center_x = pin.x*self._step + self._step/2
         center_y = pin.y*self._step + self._step/2
 
-        pin = trimesh.creation.cylinder(radius=pin.radius, height=self._base_thickness + self._relief_thickness, sections=CYLINDER_SECTIONS)
+        pin = trimesh.creation.cylinder(radius=pin.outer_radius, height=self._base_thickness + self._relief_thickness, sections=CYLINDER_SECTIONS)
         move_to_bound(pin, z=1)
         pin.apply_translation([center_x, center_y, 0])
 

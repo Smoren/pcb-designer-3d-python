@@ -46,7 +46,7 @@ def run_build_pattern():
     final_mesh.export(f'output/{file_name}.stl')
     print(f'Saved: output/{file_name}.stl')
 
-    show_mesh(final_mesh, with_axis=True)
+    # show_mesh(final_mesh, with_axis=True)
 
     img_builder = BoardPatternImageBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, dpi=300, draw_grid=False)
     image = img_builder.build()
