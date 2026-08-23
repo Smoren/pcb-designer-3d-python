@@ -1,3 +1,4 @@
+from PIL import Image, ImageOps
 from trimeshtools.combine import concatenate_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.show import show_mesh
@@ -63,10 +64,12 @@ def run_build_pattern():
     img_builder = BoardPatternImageBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, dpi=300, draw_grid=False)
 
     image = img_builder.build(side=Side.BACK)
+    image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
     image.save(f"output/{file_name}_back.png", dpi=(300, 300))
     image.show()
 
     image = img_builder.build(side=Side.FRONT)
+    image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
     image.save(f"output/{file_name}_front.png", dpi=(300, 300))
     image.show()
 
