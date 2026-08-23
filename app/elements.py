@@ -138,6 +138,7 @@ def create_or_board_pattern() -> BoardPattern:
         Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=13),
         Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=13),
         Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=13),
+        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=9),
         Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=13),
     ]
 
@@ -152,9 +153,10 @@ def create_or_board_pattern() -> BoardPattern:
     multi_track2 = MultiTrack(x_start=7, y_start=0, width=track_width) \
         .move(x_offset=0, y_offset=1) \
         .move(x_offset=1, y_offset=0) \
-        .move(x_offset=-2, y_offset=0) \
-        .move(x_offset=-4, y_offset=4) \
-        .move(x_offset=0, y_offset=2) \
+        .move(x_offset=-3, y_offset=0) \
+        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=-3, y_offset=3) \
+        .move(x_offset=0, y_offset=2)
 
     multi_track3 = MultiTrack(x_start=0, y_start=2, width=track_width) \
         .move(x_offset=3, y_offset=0)
@@ -165,22 +167,22 @@ def create_or_board_pattern() -> BoardPattern:
         .move(x_offset=0, y_offset=6) \
         .move(x_offset=1, y_offset=1) \
         .move(x_offset=0, y_offset=1) \
-        .move(x_offset=-1, y_offset=1) \
-        .move(x_offset=-2, y_offset=0)
+        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=-3, y_offset=0)
 
     multi_track5 = MultiTrack(x_start=3, y_start=6, width=track_width) \
         .move(x_offset=0, y_offset=1) \
-        .move(x_offset=-1, y_offset=1) \
-        .move(x_offset=-2, y_offset=0) \
+        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=-3, y_offset=0) \
         .move(x_offset=0, y_offset=3) \
-        .move(x_offset=1, y_offset=1) \
-        .move(x_offset=2, y_offset=0) \
+        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=3, y_offset=0) \
         .move(x_offset=1, y_offset=1) \
         .move(x_offset=1, y_offset=0)
 
     multi_track6 = MultiTrack(x_start=1, y_start=10, width=track_width) \
-        .move(x_offset=1, y_offset=1) \
-        .move(x_offset=2, y_offset=0)
+        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=3, y_offset=0)
 
     multi_track7 = MultiTrack(x_start=6, y_start=13, width=track_width) \
         .move(x_offset=2, y_offset=0)
