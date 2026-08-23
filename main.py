@@ -74,7 +74,39 @@ def run_build_pattern():
     image.show()
 
 
+def run_build_pattern_multi(x_count=1, y_count=1):
+    file_name = 'pattern_multi'
+
+    board_pattern = create_or_board_pattern()
+
+    img_builder = BoardPatternImageBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, dpi=300, draw_grid=False)
+
+    image = img_builder.build(side=Side.BACK)
+    image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+
+    w, h = image.size
+    new_w, new_h = w * x_count, h * y_count
+    multi_image = Image.new('RGBA', (new_w, new_h), (0, 0, 0, 0))
+    for y in range(y_count):
+        for x in range(x_count):
+            multi_image.paste(image, (x * w, y * h))
+    multi_image.save(f"output/{file_name}_back.png", dpi=(300, 300))
+    multi_image.show()
+
+    image = img_builder.build(side=Side.FRONT)
+    image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+
+    w, h = image.size
+    new_w, new_h = w * x_count, h * y_count
+    multi_image = Image.new('RGBA', (new_w, new_h), (0, 0, 0, 0))
+    for y in range(y_count):
+        for x in range(x_count):
+            multi_image.paste(image, (x * w, y * h))
+    multi_image.save(f"output/{file_name}_front.png", dpi=(300, 300))
+    multi_image.show()
+
+
 if __name__ == '__main__':
     # run_build_mesh()
     # run_build_back_pattern()
-    run_build_pattern()
+    run_build_pattern_multi(3, 3)
