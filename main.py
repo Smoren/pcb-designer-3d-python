@@ -69,7 +69,7 @@ def run_build_pattern():
     image.show()
 
     image = img_builder.build(side=Side.FRONT)
-    image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    # image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
     image.save(f"output/{file_name}_front.png", dpi=(300, 300))
     image.show()
 
