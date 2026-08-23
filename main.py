@@ -35,7 +35,7 @@ def run_build_mesh():
 def run_build_pattern_and_mesh():
     file_name = 'pattern'
 
-    board_pattern = create_or_board_back_pattern()
+    board_pattern = create_or_board_pattern()
 
     # mesh_builder = BoardPatternMeshBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, thickness=0.5)
     mesh_builder = ReliefBoardPatternMeshBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, base_thickness=2, relief_thickness=2)
