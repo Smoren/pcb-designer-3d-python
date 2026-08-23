@@ -2,12 +2,12 @@ from typing import List, Optional
 
 
 class Pin:
-    x: int
-    y: int
+    x: float
+    y: float
     outer_radius: float
     inner_radius: Optional[float]
 
-    def __init__(self, x: int, y: int, outer_radius: float, inner_radius: Optional[float] = None):
+    def __init__(self, x: float, y: float, outer_radius: float, inner_radius: Optional[float] = None):
         self.x = x
         self.y = y
         self.outer_radius = outer_radius
@@ -15,13 +15,13 @@ class Pin:
 
 
 class Track:
-    x: int
-    y: int
-    x_count: int
-    y_count: int
+    x: float
+    y: float
+    x_count: float
+    y_count: float
     width: float
 
-    def __init__(self, x: int, y: int, x_count: int, y_count: int, width: float):
+    def __init__(self, x: float, y: float, x_count: float, y_count: float, width: float):
         self.x = x
         self.y = y
         self.x_count = x_count
@@ -30,8 +30,8 @@ class Track:
 
 
 class MultiTrack:
-    _x_start: int
-    _y_start: int
+    _x_start: float
+    _y_start: float
     _width: float
     _tracks: List[Track]
 
@@ -41,7 +41,7 @@ class MultiTrack:
         self._width = width
         self._tracks = []
 
-    def move(self, x_offset: int, y_offset: int) -> "MultiTrack":
+    def move(self, x_offset: float, y_offset: float) -> "MultiTrack":
         self._tracks.append(Track(
             x=self._x_start,
             y=self._y_start,

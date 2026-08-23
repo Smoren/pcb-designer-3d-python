@@ -171,10 +171,10 @@ def create_or_board_pattern() -> BoardPattern:
         .move(x_offset=-3, y_offset=0)
 
     multi_track5 = MultiTrack(x_start=3, y_start=6, width=track_width) \
-        .move(x_offset=0, y_offset=1) \
+        .move(x_offset=0, y_offset=1.5) \
         .move(x_offset=0, y_offset=1) \
         .move(x_offset=-3, y_offset=0) \
-        .move(x_offset=0, y_offset=3) \
+        .move(x_offset=0, y_offset=2.5) \
         .move(x_offset=0, y_offset=1) \
         .move(x_offset=3, y_offset=0) \
         .move(x_offset=1, y_offset=1) \
