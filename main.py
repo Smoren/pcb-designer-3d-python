@@ -94,7 +94,7 @@ def run_build_pattern_multi(x_count=1, y_count=1):
     multi_image.show()
 
     image = img_builder.build(side=Side.FRONT)
-    image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    # image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
 
     w, h = image.size
     new_w, new_h = w * x_count, h * y_count
