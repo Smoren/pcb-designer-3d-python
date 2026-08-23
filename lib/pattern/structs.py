@@ -1,13 +1,21 @@
+from enum import Enum
 from typing import List, Optional
+
+class Side(Enum):
+    BACK = "back"
+    FRONT = "front"
+    BOTH = "both"
 
 
 class Pin:
+    side: Side
     x: float
     y: float
     outer_radius: float
     inner_radius: Optional[float]
 
-    def __init__(self, x: float, y: float, outer_radius: float, inner_radius: Optional[float] = None):
+    def __init__(self, side: Side, x: float, y: float, outer_radius: float, inner_radius: Optional[float] = None):
+        self.side = side
         self.x = x
         self.y = y
         self.outer_radius = outer_radius
@@ -15,13 +23,15 @@ class Pin:
 
 
 class Track:
+    side: Side
     x: float
     y: float
     x_count: float
     y_count: float
     width: float
 
-    def __init__(self, x: float, y: float, x_count: float, y_count: float, width: float):
+    def __init__(self, side: Side, x: float, y: float, x_count: float, y_count: float, width: float):
+        self.side = side
         self.x = x
         self.y = y
         self.x_count = x_count
@@ -30,12 +40,14 @@ class Track:
 
 
 class MultiTrack:
+    _side: Side
     _x_start: float
     _y_start: float
     _width: float
     _tracks: List[Track]
 
-    def __init__(self, x_start: int, y_start: int, width: float):
+    def __init__(self, side: Side, x_start: int, y_start: int, width: float):
+        self._side = side
         self._x_start = x_start
         self._y_start = y_start
         self._width = width
@@ -43,6 +55,7 @@ class MultiTrack:
 
     def move(self, x_offset: float, y_offset: float) -> "MultiTrack":
         self._tracks.append(Track(
+            side=self._side,
             x=self._x_start,
             y=self._y_start,
             x_count=x_offset,

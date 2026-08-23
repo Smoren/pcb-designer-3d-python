@@ -7,7 +7,7 @@ from app.elements import create_or_mesh, create_or_board_pattern
 from app.test import create_test
 from lib.constants import BOARD_PAD_RADIUS, BOARD_CONTACT_PAD_RADIUS, TRACK_WIDTH, BOARD_GRID_STEP
 from lib.pattern.builders import BoardPatternImageBuilder, BoardPatternMeshBuilder, ReliefBoardPatternMeshBuilder
-from lib.pattern.structs import BoardPattern, Pin, Track, MultiTrack
+from lib.pattern.structs import BoardPattern, Pin, Track, MultiTrack, Side
 
 
 def run_build_mesh():
@@ -31,10 +31,10 @@ def run_build_mesh():
     show_mesh(final_mesh, with_axis=False)
 
 
-def run_build_pattern():
+def run_build_pattern_and_mesh():
     file_name = 'pattern'
 
-    board_pattern = create_or_board_pattern()
+    board_pattern = create_or_board_back_pattern()
 
     # mesh_builder = BoardPatternMeshBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, thickness=0.5)
     mesh_builder = ReliefBoardPatternMeshBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, base_thickness=2, relief_thickness=2)
@@ -55,6 +55,23 @@ def run_build_pattern():
     image.show()
 
 
+def run_build_pattern():
+    file_name = 'pattern_back'
+
+    board_pattern = create_or_board_pattern()
+
+    img_builder = BoardPatternImageBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, dpi=300, draw_grid=False)
+
+    image = img_builder.build(side=Side.BACK)
+    image.save(f"output/{file_name}_back.png", dpi=(300, 300))
+    image.show()
+
+    image = img_builder.build(side=Side.FRONT)
+    image.save(f"output/{file_name}_front.png", dpi=(300, 300))
+    image.show()
+
+
 if __name__ == '__main__':
     # run_build_mesh()
+    # run_build_back_pattern()
     run_build_pattern()

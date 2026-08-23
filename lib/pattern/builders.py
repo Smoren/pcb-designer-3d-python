@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw
 from trimeshtools.move import move_to_bound
 
 from lib.constants import CYLINDER_SECTIONS
-from lib.pattern.structs import BoardPattern, Pin, Track
+from lib.pattern.structs import BoardPattern, Pin, Track, Side
 
 
 class BoardPatternImageBuilder:
@@ -34,7 +34,7 @@ class BoardPatternImageBuilder:
     def _mm_to_scaled_pixels(self, mm: float) -> int:
         return int(mm * self._dpi / 25.4 * self._antialias_factor)
 
-    def build(self):
+    def build(self, side: Side):
         width_mm = self._board_pattern.x_indent * 2 + self._board_pattern.x_count * self._step
         height_mm = self._board_pattern.y_indent * 2 + self._board_pattern.y_count * self._step
 
@@ -46,10 +46,10 @@ class BoardPatternImageBuilder:
 
         draw = self._place_board(self._board_pattern, draw)
 
-        for track in self._tracks:
+        for track in filter(lambda t: t.side == side or t.side == Side.BOTH, self._tracks):
             draw = self._place_track(track, draw)
 
-        for pin in self._pins:
+        for pin in filter(lambda p: p.side == side or p.side == Side.BOTH, self._pins):
             draw = self._place_pin(pin, draw)
 
         final_width = scaled_width_px // self._antialias_factor

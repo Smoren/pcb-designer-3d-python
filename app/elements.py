@@ -15,7 +15,7 @@ from lib.factories.led import create_led_builder
 from lib.factories.resistor import create_resistor_builder
 from lib.factories.socket import create_socket_builder
 from lib.factories.track import create_track_builder
-from lib.pattern.structs import BoardPattern, Pin, MultiTrack
+from lib.pattern.structs import BoardPattern, Pin, MultiTrack, Side
 
 
 def create_or_mesh() -> trimesh.Trimesh:
@@ -101,48 +101,50 @@ def create_or_board_pattern() -> BoardPattern:
     track_width = TRACK_WIDTH / 2.5
 
     pins = [
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=0),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=7, y=0),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=1),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=1),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=2),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=2),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=2),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=2),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=2),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=2),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=3),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=3),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=3),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=6),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=6),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=6),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=7),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=7),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=7),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=7),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=7),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=7),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=7),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=7, y=7),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=10),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=10),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=10),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=10),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=10),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=10),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=7, y=10),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=11),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=11),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=12),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=13),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=13),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=13),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=9),
-        Pin(outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=13),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=0),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=7, y=0),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=1),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=1),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=2),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=2),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=2),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=2),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=2),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=2),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=3),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=3),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=3),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=6),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=6),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=6),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=7),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=7),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=7),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=7),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=7),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=7),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=7),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=7, y=7),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=10),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=10),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=10),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=10),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=10),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=10),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=7, y=10),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=11),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=11),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=12),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=13),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=5, y=13),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=13),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=9),
+        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=13),
+        Pin(side=Side.FRONT, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=2),
+        Pin(side=Side.FRONT, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=2),
     ]
 
-    multi_track1 = MultiTrack(x_start=1, y_start=0, width=track_width) \
+    multi_track1 = MultiTrack(side=Side.BACK, x_start=1, y_start=0, width=track_width) \
         .move(x_offset=1, y_offset=1) \
         .move(x_offset=2, y_offset=0) \
         .move(x_offset=0, y_offset=1) \
@@ -150,7 +152,7 @@ def create_or_board_pattern() -> BoardPattern:
         .move(x_offset=0, y_offset=2) \
         .move(x_offset=-1, y_offset=0)
 
-    multi_track2 = MultiTrack(x_start=7, y_start=0, width=track_width) \
+    multi_track2 = MultiTrack(side=Side.BACK, x_start=7, y_start=0, width=track_width) \
         .move(x_offset=0, y_offset=1) \
         .move(x_offset=1, y_offset=0) \
         .move(x_offset=-3, y_offset=0) \
@@ -158,10 +160,10 @@ def create_or_board_pattern() -> BoardPattern:
         .move(x_offset=-3, y_offset=3) \
         .move(x_offset=0, y_offset=2)
 
-    multi_track3 = MultiTrack(x_start=0, y_start=2, width=track_width) \
+    multi_track3 = MultiTrack(side=Side.BACK, x_start=0, y_start=2, width=track_width) \
         .move(x_offset=3, y_offset=0)
 
-    multi_track4 = MultiTrack(x_start=6, y_start=2, width=track_width) \
+    multi_track4 = MultiTrack(side=Side.BACK, x_start=6, y_start=2, width=track_width) \
         .move(x_offset=2, y_offset=0) \
         .move(x_offset=-1, y_offset=0) \
         .move(x_offset=0, y_offset=6) \
@@ -170,7 +172,7 @@ def create_or_board_pattern() -> BoardPattern:
         .move(x_offset=0, y_offset=1) \
         .move(x_offset=-3, y_offset=0)
 
-    multi_track5 = MultiTrack(x_start=3, y_start=6, width=track_width) \
+    multi_track5 = MultiTrack(side=Side.BACK, x_start=3, y_start=6, width=track_width) \
         .move(x_offset=0, y_offset=1.5) \
         .move(x_offset=0, y_offset=1) \
         .move(x_offset=-3, y_offset=0) \
@@ -180,12 +182,15 @@ def create_or_board_pattern() -> BoardPattern:
         .move(x_offset=1, y_offset=1) \
         .move(x_offset=1, y_offset=0)
 
-    multi_track6 = MultiTrack(x_start=1, y_start=10, width=track_width) \
+    multi_track6 = MultiTrack(side=Side.BACK, x_start=1, y_start=10, width=track_width) \
         .move(x_offset=0, y_offset=1) \
         .move(x_offset=3, y_offset=0)
 
-    multi_track7 = MultiTrack(x_start=6, y_start=13, width=track_width) \
+    multi_track7 = MultiTrack(side=Side.BACK, x_start=6, y_start=13, width=track_width) \
         .move(x_offset=2, y_offset=0)
+
+    multi_track8 = MultiTrack(side=Side.FRONT, x_start=3, y_start=2, width=track_width) \
+        .move(x_offset=3, y_offset=0)
 
     tracks = [
         *multi_track1.tracks,
@@ -195,6 +200,7 @@ def create_or_board_pattern() -> BoardPattern:
         *multi_track5.tracks,
         *multi_track6.tracks,
         *multi_track7.tracks,
+        *multi_track8.tracks,
     ]
 
     return BoardPattern(x_count=9, y_count=14, x_indent=1.2, y_indent=1.2, pins=pins, tracks=tracks)
