@@ -56,7 +56,7 @@ def run_build_pattern_and_mesh():
 
 
 def run_build_pattern():
-    file_name = 'pattern_back'
+    file_name = 'pattern'
 
     board_pattern = create_or_board_pattern()
 
