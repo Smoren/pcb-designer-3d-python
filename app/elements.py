@@ -108,8 +108,8 @@ def create_or_board_pattern() -> BoardPattern:
         Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=2),
         Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=1, y=2),
         Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=2, y=2),
-        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=2),
-        Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=2),
+        Pin(side=Side.BOTH, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=2),
+        Pin(side=Side.BOTH, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=2),
         Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=2),
         Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=0, y=3),
         Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=4, y=3),
@@ -140,8 +140,6 @@ def create_or_board_pattern() -> BoardPattern:
         Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=13),
         Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=9),
         Pin(side=Side.BACK, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=8, y=13),
-        Pin(side=Side.FRONT, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=3, y=2),
-        Pin(side=Side.FRONT, outer_radius=pin_outer_radius, inner_radius=pin_inner_radius, x=6, y=2),
     ]
 
     multi_track1 = MultiTrack(side=Side.BACK, x_start=1, y_start=0, width=track_width) \
