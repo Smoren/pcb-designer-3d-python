@@ -107,6 +107,6 @@ def run_build_pattern_multi(x_count=1, y_count=1):
 
 
 if __name__ == '__main__':
-    # run_build_mesh()
+    run_build_mesh()
     # run_build_back_pattern()
-    run_build_pattern_multi(3, 3)
+    # run_build_pattern_multi(7, 7)

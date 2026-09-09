@@ -2,7 +2,7 @@ import trimesh
 from trimeshtools.combine import concatenate_meshes
 
 from lib.base import GridPlacer, PositionSide, Rotation, CachedBuilderManager, TransparentBuildManager
-from lib.factories.board import create_board_builder
+from lib.factories.board import create_prototyping_board_builder
 from lib.constants import BOARD_GRID_STEP, COLOR_RED
 from lib.factories.track import create_track_builder
 from lib.factories.wire import create_wire_builder
@@ -14,7 +14,7 @@ def create_test() -> trimesh.Trimesh:
 
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
-    board_builder = create_board_builder(7, 5, x_indent=1.2, y_indent=1.2)
+    board_builder = create_prototyping_board_builder(7, 5, x_indent=1.2, y_indent=1.2)
     wire_builder = create_wire_builder(15, COLOR_RED)
     track_builder = create_track_builder(3, 1)
 

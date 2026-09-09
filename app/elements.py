@@ -6,7 +6,7 @@ from trimeshtools.combine import concatenate_meshes
 from trimeshtools.rotate import create_rotation_matrix_for_z
 
 from lib.base import GridPlacer, PositionSide, Rotation, CachedBuilderManager
-from lib.factories.board import create_board_builder
+from lib.factories.board import create_prototyping_board_builder
 from lib.factories.chip import create_chip_builder
 from lib.constants import BOARD_GRID_STEP, COLOR_BLUE, COLOR_ORANGE, COLOR_BLACK, BOARD_CONTACT_PAD_RADIUS, \
     TRACK_WIDTH, BOARD_PAD_RADIUS
@@ -23,7 +23,7 @@ def create_or_mesh() -> trimesh.Trimesh:
 
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
-    board_builder = create_board_builder(14, 9, x_indent=1.2, y_indent=1.2)
+    board_builder = create_prototyping_board_builder(14, 9, x_indent=1.2, y_indent=1.2)
     resistor_220om_builder = create_resistor_builder('220 Om', np.array([0, 0, 100, 255]))
     resistor_10kom_builder = create_resistor_builder('10 kOm', np.array([0, 0, 0, 255]))
     blue_led_builder = create_led_builder(COLOR_BLUE)

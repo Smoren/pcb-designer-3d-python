@@ -7,7 +7,7 @@ from lib.base import BaseMeshBuilder, FloatPosition3d, Rotation, PositionSide
 from lib.constants import CYLINDER_SECTIONS
 
 
-class BoardBuilder(BaseMeshBuilder):
+class PrototypingBoardBuilder(BaseMeshBuilder):
     _x_count: int
     _y_count: int
     _step: float
