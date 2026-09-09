@@ -1,22 +1,20 @@
-from PIL import Image, ImageOps
+from PIL import Image
 from trimeshtools.combine import concatenate_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.show import show_mesh
 
 from app.box import create_middle_box_mesh
-from app.elements import create_or_mesh, create_or_board_pattern
-from app.test import create_test
-from lib.constants import BOARD_PAD_RADIUS, BOARD_CONTACT_PAD_RADIUS, TRACK_WIDTH, BOARD_GRID_STEP
-from lib.factories.board import create_printed_board_builder
-from lib.pattern.builders import BoardPatternImageBuilder, BoardPatternMeshBuilder, ReliefBoardPatternMeshBuilder
-from lib.pattern.structs import BoardPattern, Pin, Track, MultiTrack, Side
+from app.elements import create_or_prototype_mesh, create_or_board_pattern, create_or_printed_mesh
+from lib.constants import BOARD_GRID_STEP
+from lib.pattern.builders import BoardPatternImageBuilder
+from lib.pattern.structs import Side
 
 
-def run_build_mesh():
-    file_name = 'test'
+def run_build_prototype_mesh():
+    file_name = 'or_prototype'
 
     # final_mesh = create_test()
-    final_mesh = create_or_mesh()
+    final_mesh = create_or_prototype_mesh()
     move_to_bound(final_mesh, 0, 0)
 
     middle_box_mesh = create_middle_box_mesh()
@@ -33,45 +31,19 @@ def run_build_mesh():
     show_mesh(final_mesh, with_axis=False)
 
 
-def run_build_printed_board_mesh():
-    file_name = 'printed_board'
+def run_build_printed_mesh():
+    file_name = 'or_printed'
 
-    board_pattern = create_or_board_pattern()
-
-    mesh_builder = create_printed_board_builder(board_pattern)
-    final_mesh = mesh_builder.build()
+    final_mesh = create_or_printed_mesh()
+    # move_to_bound(final_mesh, 0, 0)
 
     print('is_watertight =', final_mesh.is_watertight)
     print('is_volume =', final_mesh.is_volume)
 
-    final_mesh.export(f'output/{file_name}.stl')
-    print(f'Saved: output/{file_name}.stl')
+    final_mesh.export(f'output/{file_name}.obj')
+    print(f'Saved: output/{file_name}.obj')
 
     show_mesh(final_mesh, with_axis=False)
-
-
-def run_build_pattern_and_mesh():
-    file_name = 'pattern'
-
-    board_pattern = create_or_board_pattern()
-
-    # mesh_builder = BoardPatternMeshBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, thickness=0.5)
-    mesh_builder = ReliefBoardPatternMeshBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, base_thickness=2, relief_thickness=2)
-    final_mesh = mesh_builder.build()
-
-    print('is_watertight =', final_mesh.is_watertight)
-    print('is_volume =', final_mesh.is_volume)
-
-    final_mesh.export(f'output/{file_name}.stl')
-    print(f'Saved: output/{file_name}.stl')
-
-    # show_mesh(final_mesh, with_axis=True)
-
-    img_builder = BoardPatternImageBuilder(step=BOARD_GRID_STEP, board_pattern=board_pattern, dpi=300, draw_grid=False)
-    image = img_builder.build()
-
-    image.save("output/pattern.png", dpi=(300, 300))
-    image.show()
 
 
 def run_build_pattern():
@@ -125,7 +97,7 @@ def run_build_pattern_multi(x_count=1, y_count=1):
 
 
 if __name__ == '__main__':
-    run_build_printed_board_mesh()
-    # run_build_mesh()
+    run_build_printed_mesh()
+    # run_build_prototype_mesh()
     # run_build_back_pattern()
     # run_build_pattern_multi(7, 7)
