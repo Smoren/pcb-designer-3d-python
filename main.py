@@ -3,7 +3,7 @@ from trimeshtools.combine import concatenate_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.show import show_mesh
 
-from app.box import create_middle_box_mesh
+from app.box import create_middle_box_mesh, create_bottom_box_mesh
 from app.elements import create_or_prototype_mesh, create_or_board_pattern, create_or_printed_mesh
 from lib.constants import BOARD_GRID_STEP
 from lib.pattern.builders import BoardPatternImageBuilder
@@ -40,13 +40,16 @@ def run_build_printed_mesh():
     middle_box_mesh = create_middle_box_mesh()
     final_mesh = concatenate_meshes(final_mesh, middle_box_mesh)
 
+    bottom_box_mesh = create_bottom_box_mesh()
+    final_mesh = concatenate_meshes(final_mesh, bottom_box_mesh)
+
     print('is_watertight =', final_mesh.is_watertight)
     print('is_volume =', final_mesh.is_volume)
 
     final_mesh.export(f'output/{file_name}.obj')
     print(f'Saved: output/{file_name}.obj')
 
-    show_mesh(final_mesh, with_axis=False)
+    show_mesh(final_mesh, with_axis=True)
 
 
 def run_build_pattern():
