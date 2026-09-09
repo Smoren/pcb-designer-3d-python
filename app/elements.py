@@ -96,8 +96,8 @@ def create_or_prototype_mesh() -> trimesh.Trimesh:
 
 
 def create_or_printed_mesh() -> trimesh.Trimesh:
-    build_manager = TransparentBuildManager()
-    # build_manager = CachedBuilderManager()
+    # build_manager = TransparentBuildManager()
+    build_manager = CachedBuilderManager()
 
     placer = GridPlacer(build_manager, BOARD_GRID_STEP, (0, 0, 0))
 
