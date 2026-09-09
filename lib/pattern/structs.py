@@ -21,6 +21,9 @@ class Pin:
         self.outer_radius = outer_radius
         self.inner_radius = inner_radius
 
+    def __repr__(self):
+        return f'Pin(side={self.side.value}, x={self.x}, y={self.y}, outer_radius={self.outer_radius}, inner_radius={self.inner_radius})'
+
 
 class Track:
     side: Side
@@ -37,6 +40,9 @@ class Track:
         self.x_count = x_count
         self.y_count = y_count
         self.width = width
+
+    def __repr__(self):
+        return f'Track(side={self.side.value}, x={self.x}, y={self.y}, x_count={self.x_count}, y_count={self.y_count}, width={self.width})'
 
 
 class MultiTrack:
@@ -90,3 +96,8 @@ class BoardPattern:
 
         self.pins = pins
         self.tracks = tracks
+
+    def __repr__(self):
+        pins = ', '.join(repr(pin) for pin in self.pins)
+        tracks = ', '.join(repr(track) for track in self.tracks)
+        return f'BoardPattern(x_count={self.x_count}, y_count={self.y_count}, x_indent={self.x_indent}, y_indent={self.y_indent}, pins=[{pins}], tracks=[{tracks}])'
