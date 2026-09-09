@@ -56,7 +56,7 @@ def create_or_prototype_mesh() -> trimesh.Trimesh:
     meshes.append(placer.place(orange_led_builder, (2, 8), PositionSide.TOP, Rotation.ROTATE_180))
     meshes.append(placer.place(blue_led_builder, (13, 2), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
 
-    meshes.append(placer.place(chip_builder, (7, 1), PositionSide.TOP, Rotation.ROTATE_COUNTER_CLOCKWISE_90))
+    meshes.append(placer.place(chip_builder, (7, 1), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
 
     meshes.append(placer.place(socket_builder, (-2, 0), PositionSide.TOP, Rotation.ROTATE_180))
     meshes.append(placer.place(socket_builder, (-2, 6), PositionSide.TOP, Rotation.ROTATE_180))
@@ -114,27 +114,25 @@ def create_or_printed_mesh() -> trimesh.Trimesh:
     meshes = []
     meshes.append(placer.place(board_builder, (0, 0), PositionSide.TOP, Rotation.NO_ROTATION))
 
-    meshes.append(placer.place(chip_builder, (1, 7), PositionSide.TOP, Rotation.ROTATE_180))
+    meshes.append(placer.place(chip_builder, (1, 7), PositionSide.TOP, Rotation.NO_ROTATION))
 
     meshes.append(placer.place(resistor_220om_builder, (8, 9), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
     meshes.append(placer.place(resistor_220om_builder, (0, 3), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
     meshes.append(placer.place(resistor_220om_builder, (4, 3), PositionSide.TOP, Rotation.NO_ROTATION))
 
     meshes.append(placer.place(resistor_10kom_builder, (1, 2), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
+    meshes.append(placer.place(resistor_10kom_builder, (2, 2), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
+    meshes.append(placer.place(resistor_10kom_builder, (3, 2), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
 
-    # meshes.append(placer.place(resistor_10kom_builder, (2, 6), PositionSide.TOP, Rotation.NO_ROTATION))
-    # meshes.append(placer.place(resistor_10kom_builder, (2, 7), PositionSide.TOP, Rotation.NO_ROTATION))
+    meshes.append(placer.place(orange_led_builder, (0, 2), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
+    meshes.append(placer.place(orange_led_builder, (8, 2), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
+    meshes.append(placer.place(blue_led_builder, (5, 13), PositionSide.TOP, Rotation.NO_ROTATION))
 
-    # meshes.append(placer.place(orange_led_builder, (2, 0), PositionSide.TOP, Rotation.ROTATE_180))
-    # meshes.append(placer.place(orange_led_builder, (2, 8), PositionSide.TOP, Rotation.ROTATE_180))
-    # meshes.append(placer.place(blue_led_builder, (13, 2), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
-
-    # meshes.append(placer.place(socket_builder, (-2, 0), PositionSide.TOP, Rotation.ROTATE_180))
-    # meshes.append(placer.place(socket_builder, (-2, 6), PositionSide.TOP, Rotation.ROTATE_180))
-    # meshes.append(placer.place(socket_builder, (11, 3), PositionSide.TOP, Rotation.NO_ROTATION))
+    meshes.append(placer.place(socket_builder, (0, -2.5), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
+    meshes.append(placer.place(socket_builder, (6, -2.5), PositionSide.TOP, Rotation.ROTATE_CLOCKWISE_90))
+    meshes.append(placer.place(socket_builder, (3.5, 11), PositionSide.TOP, Rotation.ROTATE_COUNTER_CLOCKWISE_90))
 
     final_mesh = concatenate_meshes(*meshes)
-    final_mesh.apply_transform(create_rotation_matrix_for_z(math.pi/2))
 
     # fix_all(final_mesh)
     return final_mesh

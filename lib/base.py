@@ -13,6 +13,7 @@ from lib.constants import CACHE_DIR
 FloatPosition3d = Tuple[float, float, float]
 IntPosition3d = Tuple[int, int, int]
 IntPosition2d = Tuple[int, int]
+FloatPosition2d = Tuple[float, float]
 
 
 class PositionSide(Enum):
@@ -106,7 +107,7 @@ class GridPlacer:
         self._step = step
         self._offset = offset
 
-    def place(self, mesh_builder: BaseMeshBuilder, position: IntPosition2d, side: PositionSide, rotation: Rotation) -> trimesh.Trimesh:
+    def place(self, mesh_builder: BaseMeshBuilder, position: FloatPosition2d, side: PositionSide, rotation: Rotation) -> trimesh.Trimesh:
         mesh = self._build_manager.build(mesh_builder)
 
         if rotation != rotation.NO_ROTATION:

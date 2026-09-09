@@ -6,6 +6,7 @@ import trimesh
 from trimeshtools.combine import union_meshes, concatenate_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.rotate import create_rotation_matrix_for_z, create_mirror_matrix
+from trimeshtools.show import show_mesh
 
 from lib.base import BaseMeshBuilder, FloatPosition3d, Rotation, PositionSide
 from lib.utils.mesh import create_pin_mesh, create_text_mesh
@@ -65,7 +66,7 @@ class ChipBuilder(BaseMeshBuilder):
     def build(self) -> trimesh.Trimesh:
         box_mesh = trimesh.creation.box([self._x_count*self._step, self._y_count*self._step, self._thickness])
         box_diff = trimesh.creation.cylinder(radius=self._pit_radius, height=self._pit_height)
-        move_to_bound(box_mesh, -1, 0, -1)
+        move_to_bound(box_mesh, 1, 0, -1)
         move_to_bound(box_diff, 0, 0, -1)
         box_mesh = box_mesh.difference(box_diff)
         box_mesh.visual.face_colors = self._color
