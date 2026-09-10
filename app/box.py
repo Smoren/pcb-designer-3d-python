@@ -3,33 +3,39 @@ import trimesh
 from trimeshtools.combine import union_meshes
 from trimeshtools.move import move_to_bound
 
-OUTER_WIDTH = 31
-OUTER_HEIGHT = 44
 THICKNESS = 4
+
 SUPPORT_OFFSET = 2.25
 SUPPORT_RADIUS = 7
 SUPPORT_THICKNESS = 6
 SUPPORT_THICKNESS_OFFSET = 4
+
 SOCKET_WIDTH = 5.5
 SOCKET_HEIGHT = 7.5
 SOCKET_LEFT_OFFSET = -7.75
 SOCKET_RIGHT_OFFSET = 7.5
 
+MIDDLE_OUTER_WIDTH = 31
+MIDDLE_OUTER_HEIGHT = 44
 MIDDLE_OUTER_THICKNESS = 14
 
 BOTTOM_OUTER_THICKNESS = 8
 BOTTOM_BED_THICKNESS = 3
 BOTTOM_HOLE_RADIUS = 3.5
 
+TOP_DIODE_HOLE_RADIUS = 1.8
+TOP_OUTER_THICKNESS = 5
+TOP_ROOF_THICKNESS = 3
+
 
 def create_middle_box_mesh() -> trimesh.Trimesh:
-    box_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, MIDDLE_OUTER_THICKNESS))
+    box_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, MIDDLE_OUTER_THICKNESS))
 
-    diff_mesh = trimesh.creation.box((OUTER_WIDTH-THICKNESS, OUTER_HEIGHT-THICKNESS, MIDDLE_OUTER_THICKNESS))
+    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH - THICKNESS, MIDDLE_OUTER_HEIGHT - THICKNESS, MIDDLE_OUTER_THICKNESS))
     box_mesh = box_mesh.difference(diff_mesh)
 
-    support_mesh = trimesh.creation.box((OUTER_WIDTH-SUPPORT_OFFSET, OUTER_HEIGHT-SUPPORT_OFFSET, SUPPORT_THICKNESS))
-    support_diff_mesh = trimesh.creation.box((OUTER_WIDTH-SUPPORT_RADIUS, OUTER_HEIGHT-SUPPORT_RADIUS, SUPPORT_THICKNESS*2))
+    support_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH-SUPPORT_OFFSET, MIDDLE_OUTER_HEIGHT-SUPPORT_OFFSET, SUPPORT_THICKNESS))
+    support_diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH-SUPPORT_RADIUS, MIDDLE_OUTER_HEIGHT-SUPPORT_RADIUS, SUPPORT_THICKNESS*2))
     support_mesh = support_mesh.difference(support_diff_mesh)
     move_to_bound(box_mesh, 0, 0, 1)
     move_to_bound(support_mesh, 0, 0, -1)
@@ -59,12 +65,12 @@ def create_middle_box_mesh() -> trimesh.Trimesh:
 
 
 def create_bottom_box_mesh() -> trimesh.Trimesh:
-    walls_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, BOTTOM_OUTER_THICKNESS))
-    diff_mesh = trimesh.creation.box((OUTER_WIDTH-THICKNESS, OUTER_HEIGHT-THICKNESS, BOTTOM_OUTER_THICKNESS*2))
+    walls_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, BOTTOM_OUTER_THICKNESS))
+    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH - THICKNESS, MIDDLE_OUTER_HEIGHT - THICKNESS, BOTTOM_OUTER_THICKNESS * 2))
     walls_mesh = walls_mesh.difference(diff_mesh)
     move_to_bound(walls_mesh, 0, 0, 1)
 
-    bed_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, BOTTOM_BED_THICKNESS))
+    bed_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, BOTTOM_BED_THICKNESS))
     move_to_bound(bed_mesh, 0, 0, 1)
 
     final_mesh = union_meshes(walls_mesh, bed_mesh)
@@ -80,12 +86,26 @@ def create_bottom_box_mesh() -> trimesh.Trimesh:
 
 
 def create_top_box_mesh() -> trimesh.Trimesh:
-    walls_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, BOTTOM_OUTER_THICKNESS))
-    diff_mesh = trimesh.creation.box((OUTER_WIDTH - THICKNESS, OUTER_HEIGHT - THICKNESS, BOTTOM_OUTER_THICKNESS * 2))
+    walls_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, TOP_OUTER_THICKNESS))
+    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH - THICKNESS, MIDDLE_OUTER_HEIGHT - THICKNESS, TOP_OUTER_THICKNESS * 2))
     walls_mesh = walls_mesh.difference(diff_mesh)
     move_to_bound(walls_mesh, 0, 0, -1)
 
-    roof_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, BOTTOM_BED_THICKNESS))
+    roof_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, TOP_ROOF_THICKNESS))
+    diode_hole_diff_mesh = trimesh.creation.cylinder(radius=TOP_DIODE_HOLE_RADIUS, height=TOP_OUTER_THICKNESS*2)
+
+    move_to_bound(diode_hole_diff_mesh, 0, 0, 0)
+    diode_hole_diff_mesh.apply_translation([-10, -10, 0])
+    roof_mesh = roof_mesh.difference(diode_hole_diff_mesh)
+
+    move_to_bound(diode_hole_diff_mesh, 0, 0, 0)
+    diode_hole_diff_mesh.apply_translation([10, -10, 0])
+    roof_mesh = roof_mesh.difference(diode_hole_diff_mesh)
+
+    move_to_bound(diode_hole_diff_mesh, 0, 0, 0)
+    diode_hole_diff_mesh.apply_translation([4, 16.5, 0])
+    roof_mesh = roof_mesh.difference(diode_hole_diff_mesh)
+
     move_to_bound(roof_mesh, 0, 0, -1)
 
     final_mesh = union_meshes(walls_mesh, roof_mesh)
@@ -93,5 +113,5 @@ def create_top_box_mesh() -> trimesh.Trimesh:
     move_to_bound(final_mesh, 0, 0, 0)
     final_mesh.visual.face_colors = np.array([0.7, 0, 0.7, 0.85])
 
-    final_mesh.apply_translation([0, 0, 30])
+    final_mesh.apply_translation([0, 0, 12])
     return final_mesh
