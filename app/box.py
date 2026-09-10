@@ -75,5 +75,23 @@ def create_bottom_box_mesh() -> trimesh.Trimesh:
     move_to_bound(final_mesh, 0, 0, 0)
     final_mesh.visual.face_colors = np.array([0.7, 0, 0.7, 0.85])
 
-    final_mesh.apply_translation([0, 0, -20])
+    final_mesh.apply_translation([0, 0, -30])
+    return final_mesh
+
+
+def create_top_box_mesh() -> trimesh.Trimesh:
+    walls_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, BOTTOM_OUTER_THICKNESS))
+    diff_mesh = trimesh.creation.box((OUTER_WIDTH - THICKNESS, OUTER_HEIGHT - THICKNESS, BOTTOM_OUTER_THICKNESS * 2))
+    walls_mesh = walls_mesh.difference(diff_mesh)
+    move_to_bound(walls_mesh, 0, 0, -1)
+
+    roof_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, BOTTOM_BED_THICKNESS))
+    move_to_bound(roof_mesh, 0, 0, -1)
+
+    final_mesh = union_meshes(walls_mesh, roof_mesh)
+
+    move_to_bound(final_mesh, 0, 0, 0)
+    final_mesh.visual.face_colors = np.array([0.7, 0, 0.7, 0.85])
+
+    final_mesh.apply_translation([0, 0, 30])
     return final_mesh
