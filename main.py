@@ -49,12 +49,12 @@ def run_build_printed_mesh():
     print('is_watertight =', final_mesh.is_watertight)
     print('is_volume =', final_mesh.is_volume)
 
-    final_mesh.export(f'output/{file_name}.obj')
-    print(f'Saved: output/{file_name}.obj')
-
     bottom_box_mesh.export(f'output/box_bottom.stl')
     middle_box_mesh.export(f'output/box_middle.stl')
     top_box_mesh.export(f'output/box_top.stl')
+
+    final_mesh.export(f'output/{file_name}.obj')
+    print(f'Saved: output/{file_name}.obj')
 
     show_mesh(final_mesh, with_axis=False)
 
