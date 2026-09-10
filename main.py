@@ -3,7 +3,7 @@ from trimeshtools.combine import concatenate_meshes
 from trimeshtools.move import move_to_bound
 from trimeshtools.show import show_mesh
 
-from app.box import create_middle_box_mesh, create_bottom_box_mesh, create_top_box_mesh
+from app.box import create_middle_box_mesh, create_bottom_box_mesh, create_top_box_mesh, create_top_button_box_mesh
 from app.elements import create_or_prototype_mesh, create_or_board_pattern, create_or_printed_mesh
 from lib.constants import BOARD_GRID_STEP
 from lib.pattern.builders import BoardPatternImageBuilder
@@ -109,7 +109,14 @@ def run_build_pattern_multi(x_count=1, y_count=1):
     multi_image.show()
 
 
+def run_test():
+    mesh = create_top_button_box_mesh()
+    mesh.export(f'output/box_button_top.stl')
+    show_mesh(mesh)
+
+
 if __name__ == '__main__':
+    # run_test()
     run_build_printed_mesh()
     # run_build_prototype_mesh()
     # run_build_back_pattern()

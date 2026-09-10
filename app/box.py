@@ -15,8 +15,8 @@ SOCKET_HEIGHT = 7.5
 SOCKET_LEFT_OFFSET = -7.75
 SOCKET_RIGHT_OFFSET = 7.5
 
-MIDDLE_OUTER_WIDTH = 31
-MIDDLE_OUTER_HEIGHT = 44
+OUTER_WIDTH = 31
+OUTER_HEIGHT = 44
 MIDDLE_OUTER_THICKNESS = 10
 MIDDLE_TOLERANCE = 0.07
 
@@ -30,15 +30,18 @@ TOP_ROOF_THICKNESS = 3
 TOP_STEMS_THICKNESS = 12
 TOP_STEM_DIAMETER = 3
 
+TOP_BUTTON_OUTER_THICKNESS = 10
+TOP_BUTTON_STEMS_THICKNESS = 16
+TOP_BUTTON_HOLE_RADIUS = 9.5
 
 def create_middle_box_mesh() -> trimesh.Trimesh:
-    box_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, MIDDLE_OUTER_THICKNESS))
+    box_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, MIDDLE_OUTER_THICKNESS))
 
-    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH - THICKNESS, MIDDLE_OUTER_HEIGHT - THICKNESS, MIDDLE_OUTER_THICKNESS))
+    diff_mesh = trimesh.creation.box((OUTER_WIDTH - THICKNESS, OUTER_HEIGHT - THICKNESS, MIDDLE_OUTER_THICKNESS))
     box_mesh = box_mesh.difference(diff_mesh)
 
-    support_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH-SUPPORT_OFFSET, MIDDLE_OUTER_HEIGHT-SUPPORT_OFFSET, SUPPORT_THICKNESS))
-    support_diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH-SUPPORT_RADIUS, MIDDLE_OUTER_HEIGHT-SUPPORT_RADIUS, SUPPORT_THICKNESS*2))
+    support_mesh = trimesh.creation.box((OUTER_WIDTH - SUPPORT_OFFSET, OUTER_HEIGHT - SUPPORT_OFFSET, SUPPORT_THICKNESS))
+    support_diff_mesh = trimesh.creation.box((OUTER_WIDTH - SUPPORT_RADIUS, OUTER_HEIGHT - SUPPORT_RADIUS, SUPPORT_THICKNESS * 2))
     support_mesh = support_mesh.difference(support_diff_mesh)
     move_to_bound(box_mesh, 0, 0, 1)
     move_to_bound(support_mesh, 0, 0, -1)
@@ -69,12 +72,12 @@ def create_middle_box_mesh() -> trimesh.Trimesh:
 
 
 def create_bottom_box_mesh() -> trimesh.Trimesh:
-    walls_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, BOTTOM_OUTER_THICKNESS))
-    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH-SUPPORT_OFFSET-MIDDLE_TOLERANCE, MIDDLE_OUTER_HEIGHT-SUPPORT_OFFSET-MIDDLE_TOLERANCE, BOTTOM_OUTER_THICKNESS * 2))
+    walls_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, BOTTOM_OUTER_THICKNESS))
+    diff_mesh = trimesh.creation.box((OUTER_WIDTH - SUPPORT_OFFSET - MIDDLE_TOLERANCE, OUTER_HEIGHT - SUPPORT_OFFSET - MIDDLE_TOLERANCE, BOTTOM_OUTER_THICKNESS * 2))
     walls_mesh = walls_mesh.difference(diff_mesh)
     move_to_bound(walls_mesh, 0, 0, 1)
 
-    bed_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, BOTTOM_BED_THICKNESS))
+    bed_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, BOTTOM_BED_THICKNESS))
     move_to_bound(bed_mesh, 0, 0, 1)
 
     final_mesh = union_meshes(walls_mesh, bed_mesh)
@@ -91,12 +94,12 @@ def create_bottom_box_mesh() -> trimesh.Trimesh:
 
 
 def create_top_box_mesh() -> trimesh.Trimesh:
-    walls_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, TOP_OUTER_THICKNESS))
-    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH - THICKNESS, MIDDLE_OUTER_HEIGHT - THICKNESS, TOP_OUTER_THICKNESS * 2))
+    walls_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, TOP_OUTER_THICKNESS))
+    diff_mesh = trimesh.creation.box((OUTER_WIDTH - THICKNESS, OUTER_HEIGHT - THICKNESS, TOP_OUTER_THICKNESS * 2))
     walls_mesh = walls_mesh.difference(diff_mesh)
     move_to_bound(walls_mesh, 0, 0, -1)
 
-    roof_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, TOP_ROOF_THICKNESS))
+    roof_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, TOP_ROOF_THICKNESS))
     diode_hole_diff_mesh = trimesh.creation.cylinder(radius=TOP_DIODE_HOLE_RADIUS, height=TOP_OUTER_THICKNESS*2)
 
     move_to_bound(diode_hole_diff_mesh, 0, 0, 0)
@@ -115,6 +118,51 @@ def create_top_box_mesh() -> trimesh.Trimesh:
 
     final_mesh = union_meshes(walls_mesh, roof_mesh)
     stem_mesh = trimesh.creation.box((TOP_STEM_DIAMETER, TOP_STEM_DIAMETER, TOP_STEMS_THICKNESS))
+
+    move_to_bound(final_mesh, -1, -1, -1)
+    move_to_bound(stem_mesh, -1, -1, -1)
+    stem_mesh.apply_translation([-THICKNESS/2, -THICKNESS/2, 0])
+    final_mesh = union_meshes(final_mesh, stem_mesh)
+
+    move_to_bound(final_mesh, 1, -1, -1)
+    move_to_bound(stem_mesh, 1, -1, -1)
+    stem_mesh.apply_translation([THICKNESS/2, -THICKNESS/2, 0])
+    final_mesh = union_meshes(final_mesh, stem_mesh)
+
+    move_to_bound(final_mesh, -1, 1, -1)
+    move_to_bound(stem_mesh, -1, 1, -1)
+    stem_mesh.apply_translation([-THICKNESS/2, THICKNESS/2, 0])
+    final_mesh = union_meshes(final_mesh, stem_mesh)
+
+    move_to_bound(final_mesh, 1, 1, -1)
+    move_to_bound(stem_mesh, 1, 1, -1)
+    stem_mesh.apply_translation([THICKNESS/2, THICKNESS/2, 0])
+    final_mesh = union_meshes(final_mesh, stem_mesh)
+
+    move_to_bound(final_mesh, 0, 0, 0)
+    final_mesh.visual.face_colors = np.array([0.7, 0, 0.7, 0.85])
+    final_mesh.apply_translation([0, 0, 7])
+
+    return final_mesh
+
+
+def create_top_button_box_mesh() -> trimesh.Trimesh:
+    walls_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, TOP_BUTTON_OUTER_THICKNESS))
+    diff_mesh = trimesh.creation.box((OUTER_WIDTH - THICKNESS, OUTER_HEIGHT - THICKNESS, TOP_BUTTON_OUTER_THICKNESS * 2))
+    walls_mesh = walls_mesh.difference(diff_mesh)
+    move_to_bound(walls_mesh, 0, 0, -1)
+
+    roof_mesh = trimesh.creation.box((OUTER_WIDTH, OUTER_HEIGHT, TOP_ROOF_THICKNESS))
+    hole_diff_mesh = trimesh.creation.cylinder(radius=TOP_BUTTON_HOLE_RADIUS, height=TOP_BUTTON_OUTER_THICKNESS*2)
+
+    move_to_bound(hole_diff_mesh, 0, 0, 0)
+    move_to_bound(roof_mesh, 0, 0, 0)
+    roof_mesh = roof_mesh.difference(hole_diff_mesh)
+
+    move_to_bound(roof_mesh, 0, 0, -1)
+
+    final_mesh = union_meshes(walls_mesh, roof_mesh)
+    stem_mesh = trimesh.creation.box((TOP_STEM_DIAMETER, TOP_STEM_DIAMETER, TOP_BUTTON_STEMS_THICKNESS))
 
     move_to_bound(final_mesh, -1, -1, -1)
     move_to_bound(stem_mesh, -1, -1, -1)
