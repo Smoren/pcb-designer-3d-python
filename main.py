@@ -44,7 +44,7 @@ def run_build_printed_mesh():
     final_mesh = concatenate_meshes(final_mesh, bottom_box_mesh)
 
     top_box_mesh = create_top_box_mesh()
-    # final_mesh = concatenate_meshes(final_mesh, top_box_mesh)
+    final_mesh = concatenate_meshes(final_mesh, top_box_mesh)
 
     print('is_watertight =', final_mesh.is_watertight)
     print('is_volume =', final_mesh.is_volume)
