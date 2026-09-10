@@ -7,8 +7,8 @@ THICKNESS = 4
 
 SUPPORT_OFFSET = 2.25
 SUPPORT_RADIUS = 7
-SUPPORT_THICKNESS = 6
-SUPPORT_THICKNESS_OFFSET = 4
+SUPPORT_THICKNESS = 5
+SUPPORT_THICKNESS_OFFSET = 1.7
 
 SOCKET_WIDTH = 5.5
 SOCKET_HEIGHT = 7.5
@@ -17,7 +17,7 @@ SOCKET_RIGHT_OFFSET = 7.5
 
 MIDDLE_OUTER_WIDTH = 31
 MIDDLE_OUTER_HEIGHT = 44
-MIDDLE_OUTER_THICKNESS = 14
+MIDDLE_OUTER_THICKNESS = 10
 
 BOTTOM_OUTER_THICKNESS = 8
 BOTTOM_BED_THICKNESS = 3
@@ -58,9 +58,9 @@ def create_middle_box_mesh() -> trimesh.Trimesh:
 
     final_mesh = box_mesh
 
-    move_to_bound(final_mesh, 0, 0, 0)
+    move_to_bound(final_mesh, 0, 0, -1)
     final_mesh.visual.face_colors = np.array([0.7, 0.7, 0, 0.85])
-    final_mesh.apply_translation([0, 0, -0.25])
+    final_mesh.apply_translation([0, 0, 7.75])
     return final_mesh
 
 
