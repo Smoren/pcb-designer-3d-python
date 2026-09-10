@@ -41,7 +41,7 @@ def run_build_printed_mesh():
     final_mesh = concatenate_meshes(final_mesh, middle_box_mesh)
 
     bottom_box_mesh = create_bottom_box_mesh()
-    final_mesh = concatenate_meshes(final_mesh, bottom_box_mesh)
+    # final_mesh = concatenate_meshes(final_mesh, bottom_box_mesh)
 
     print('is_watertight =', final_mesh.is_watertight)
     print('is_volume =', final_mesh.is_volume)
@@ -49,7 +49,7 @@ def run_build_printed_mesh():
     final_mesh.export(f'output/{file_name}.obj')
     print(f'Saved: output/{file_name}.obj')
 
-    show_mesh(final_mesh, with_axis=True)
+    show_mesh(final_mesh, with_axis=False)
 
 
 def run_build_pattern():
