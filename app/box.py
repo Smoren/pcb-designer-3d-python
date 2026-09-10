@@ -18,6 +18,7 @@ SOCKET_RIGHT_OFFSET = 7.5
 MIDDLE_OUTER_WIDTH = 31
 MIDDLE_OUTER_HEIGHT = 44
 MIDDLE_OUTER_THICKNESS = 10
+MIDDLE_TOLERANCE = 0.07
 
 BOTTOM_OUTER_THICKNESS = 6
 BOTTOM_BED_THICKNESS = 2
@@ -27,6 +28,7 @@ TOP_DIODE_HOLE_RADIUS = 3
 TOP_OUTER_THICKNESS = 5
 TOP_ROOF_THICKNESS = 3
 TOP_STEMS_THICKNESS = 12
+TOP_STEM_DIAMETER = 3
 
 
 def create_middle_box_mesh() -> trimesh.Trimesh:
@@ -67,9 +69,8 @@ def create_middle_box_mesh() -> trimesh.Trimesh:
 
 
 def create_bottom_box_mesh() -> trimesh.Trimesh:
-    tolerance = 0.07
     walls_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, BOTTOM_OUTER_THICKNESS))
-    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH-SUPPORT_OFFSET-tolerance, MIDDLE_OUTER_HEIGHT-SUPPORT_OFFSET-tolerance, BOTTOM_OUTER_THICKNESS * 2))
+    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH-SUPPORT_OFFSET-MIDDLE_TOLERANCE, MIDDLE_OUTER_HEIGHT-SUPPORT_OFFSET-MIDDLE_TOLERANCE, BOTTOM_OUTER_THICKNESS * 2))
     walls_mesh = walls_mesh.difference(diff_mesh)
     move_to_bound(walls_mesh, 0, 0, 1)
 
@@ -113,7 +114,7 @@ def create_top_box_mesh() -> trimesh.Trimesh:
     move_to_bound(roof_mesh, 0, 0, -1)
 
     final_mesh = union_meshes(walls_mesh, roof_mesh)
-    stem_mesh = trimesh.creation.box((3, 3, TOP_STEMS_THICKNESS))
+    stem_mesh = trimesh.creation.box((TOP_STEM_DIAMETER, TOP_STEM_DIAMETER, TOP_STEMS_THICKNESS))
 
     move_to_bound(final_mesh, -1, -1, -1)
     move_to_bound(stem_mesh, -1, -1, -1)
@@ -134,18 +135,6 @@ def create_top_box_mesh() -> trimesh.Trimesh:
     move_to_bound(stem_mesh, 1, 1, -1)
     stem_mesh.apply_translation([THICKNESS/2, THICKNESS/2, 0])
     final_mesh = union_meshes(final_mesh, stem_mesh)
-
-    side_mesh = trimesh.creation.box((1.5, MIDDLE_OUTER_HEIGHT - THICKNESS, TOP_STEMS_THICKNESS))
-
-    move_to_bound(final_mesh, 1, 1, -1)
-    move_to_bound(side_mesh, 1, 1, -1)
-    side_mesh.apply_translation([THICKNESS / 2, THICKNESS / 2, 0])
-    # final_mesh = union_meshes(final_mesh, side_mesh)
-
-    move_to_bound(final_mesh, -1, 1, -1)
-    move_to_bound(side_mesh, -1, 1, -1)
-    side_mesh.apply_translation([-THICKNESS / 2, THICKNESS / 2, 0])
-    # final_mesh = union_meshes(final_mesh, side_mesh)
 
     move_to_bound(final_mesh, 0, 0, 0)
     final_mesh.visual.face_colors = np.array([0.7, 0, 0.7, 0.85])
