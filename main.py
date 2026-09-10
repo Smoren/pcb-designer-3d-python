@@ -41,7 +41,7 @@ def run_build_printed_mesh():
     final_mesh = concatenate_meshes(final_mesh, middle_box_mesh)
 
     bottom_box_mesh = create_bottom_box_mesh()
-    # final_mesh = concatenate_meshes(final_mesh, bottom_box_mesh)
+    final_mesh = concatenate_meshes(final_mesh, bottom_box_mesh)
 
     top_box_mesh = create_top_box_mesh()
     # final_mesh = concatenate_meshes(final_mesh, top_box_mesh)
@@ -51,6 +51,9 @@ def run_build_printed_mesh():
 
     final_mesh.export(f'output/{file_name}.obj')
     print(f'Saved: output/{file_name}.obj')
+
+    bottom_box_mesh.export(f'output/box_bottom.obj')
+    middle_box_mesh.export(f'output/box_middle.obj')
 
     show_mesh(final_mesh, with_axis=False)
 

@@ -19,8 +19,8 @@ MIDDLE_OUTER_WIDTH = 31
 MIDDLE_OUTER_HEIGHT = 44
 MIDDLE_OUTER_THICKNESS = 10
 
-BOTTOM_OUTER_THICKNESS = 8
-BOTTOM_BED_THICKNESS = 3
+BOTTOM_OUTER_THICKNESS = 6
+BOTTOM_BED_THICKNESS = 2
 BOTTOM_HOLE_RADIUS = 3.5
 
 TOP_DIODE_HOLE_RADIUS = 1.8
@@ -66,7 +66,7 @@ def create_middle_box_mesh() -> trimesh.Trimesh:
 
 def create_bottom_box_mesh() -> trimesh.Trimesh:
     walls_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH, MIDDLE_OUTER_HEIGHT, BOTTOM_OUTER_THICKNESS))
-    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH - THICKNESS, MIDDLE_OUTER_HEIGHT - THICKNESS, BOTTOM_OUTER_THICKNESS * 2))
+    diff_mesh = trimesh.creation.box((MIDDLE_OUTER_WIDTH-SUPPORT_OFFSET, MIDDLE_OUTER_HEIGHT-SUPPORT_OFFSET, BOTTOM_OUTER_THICKNESS * 2))
     walls_mesh = walls_mesh.difference(diff_mesh)
     move_to_bound(walls_mesh, 0, 0, 1)
 
@@ -81,7 +81,7 @@ def create_bottom_box_mesh() -> trimesh.Trimesh:
     move_to_bound(final_mesh, 0, 0, 0)
     final_mesh.visual.face_colors = np.array([0.7, 0, 0.7, 0.85])
 
-    final_mesh.apply_translation([0, 0, -30])
+    final_mesh.apply_translation([0, 0, -5.5])
     return final_mesh
 
 
